@@ -1,9 +1,13 @@
 #pragma once
 
-#include "../../util/util.h"
+#include "sdk/util/util.h"
 
 
 namespace linearOpMode {
+
+    extern jclass clazz;
+
+    extern jobject thiz;
 
     void sleep();
 

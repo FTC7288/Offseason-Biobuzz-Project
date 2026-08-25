@@ -2,7 +2,7 @@
 
 #include <vector>
 
-typedef void (*DesiredOpMode)();
+typedef void (*DesiredOpMode)(JNIEnv*, jobject);
 
 struct RegisteredOpMode
 {

@@ -9,7 +9,7 @@
 
 #include "sdk/util/util.h"
 #include "sdk/util/opmodeRegistry.h"
-#include "headers/hardware/linearOpMode.h"
+#include "sdk/headers/software/linearOpMode.h"
 
 //HARDWARE INCLUDES
-
+#include "sdk/headers/hardware/dcMotorEx.hpp"

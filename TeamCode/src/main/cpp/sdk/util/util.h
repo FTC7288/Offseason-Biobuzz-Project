@@ -9,4 +9,5 @@ namespace sdk
 {
     extern JavaVM* jvm;
     extern JNIEnv* env;
+    extern jobject thiz;
 }
