@@ -16,14 +16,48 @@ apply plugin: 'com.android.application'
 apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
 
+
 android {
+
     namespace = 'org.firstinspires.ftc.teamcode'
 
-    packagingOptions {
-        jniLibs.useLegacyPackaging true
+    defaultConfig {
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', "x86_64"
+        }
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++20 -frtti -fexceptions"
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path 'src/main/cpp/CMakeLists.txt'
+            version '4.1.2'
+        }
+    }
+
+    buildToolsVersion '37.0.0'
+    buildFeatures {
+        viewBinding true
+    }
+    dependenciesInfo {
+        includeInApk true
+        includeInBundle true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation project(':FtcRobotController')
 }
+
+
+
