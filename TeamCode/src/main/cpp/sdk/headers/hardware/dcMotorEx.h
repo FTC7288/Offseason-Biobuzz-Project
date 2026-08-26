@@ -1,0 +1,14 @@
+//
+// Created by Sam on 8/25/2026.
+//
+
+#ifndef OFFSEASON_BIOBUZZ_PROJECT_DCMOTOREX_H
+#define OFFSEASON_BIOBUZZ_PROJECT_DCMOTOREX_H
+
+
+class dcMotorEx {
+
+};
+
+
+#endif //OFFSEASON_BIOBUZZ_PROJECT_DCMOTOREX_H

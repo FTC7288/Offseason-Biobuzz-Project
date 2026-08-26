@@ -14,7 +14,7 @@ public class <class_name> extends LinearOpMode {
     public native void <class_name>();
 
     @Override
-    public void runOpMode() throws InterruptedException
+    public void runOpMode()
     {
         <class_name>();
     }

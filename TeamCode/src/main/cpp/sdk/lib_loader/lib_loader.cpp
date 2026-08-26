@@ -14,7 +14,7 @@ JNIEnv* get_env(JavaVM* jvm)
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 {
     sdk::jvm = vm;
-    sdk::env = get_env(vm);
+    JNIEnv* env = get_env(vm);
 
     const char* filePathBasic = "org/firstinspires/ftc/teamcode/opmodes/";
 
@@ -29,28 +29,29 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
     if (!OpmodeRegistry::getOpModes().empty())
     {
         for (auto opmodeFunc: OpmodeRegistry::getOpModes()) {
-            LOG_INFO("__________________________ OpMode Name: %s ____________________", opmodeFunc.name);
+            LOG_INFO("__________________________ OpMode Name: \"%s\" ____________________", opmodeFunc.name);
 
 
             char *appendedClazzName = static_cast<char *>(malloc(1024));
             strcpy(appendedClazzName, filePathBasic);
             strcat(appendedClazzName, opmodeFunc.name);
 
-            jclass clazz = sdk::env->FindClass(appendedClazzName);
+            jclass clazz = env->FindClass(appendedClazzName);
             if (clazz == nullptr)
             {
                 LOG_ERROR("_________________Current Opmode Class Could Not Be Found: \"%s\"__________________",opmodeFunc.name);
                 continue;
             }
 
-            JNINativeMethod method[] = {opmodeFunc.name, "()V", (void *) opmodeFunc.opmode};
+            JNINativeMethod method[] = {opmodeFunc.name, "()V", (void*)opmodeFunc.opmode};
 
-            sdk::env->RegisterNatives(clazz, method, sizeof(method) / sizeof(method[0]));
+            env->RegisterNatives(clazz, method, sizeof(method) / sizeof(method[0]));
             free(appendedClazzName);
         }
     } else {
         LOG_ERROR("________________________OPMODE REGISTRY EMPTY!_____________________________");
     }
+
 
     return JNI_VERSION_1_6;
 }
