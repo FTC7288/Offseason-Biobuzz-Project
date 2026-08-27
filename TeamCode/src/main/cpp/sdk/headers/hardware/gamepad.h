@@ -2,7 +2,7 @@
 
 #include "sdk/util/util.h"
 
-struct Gamepad
+class Gamepad
 {
 private:
 
@@ -58,12 +58,6 @@ public:
     float right_stick_x = 0;
     float right_stick_y = 0;
 
-    Gamepad &operator=(const Gamepad &gamepad);
-
-    Gamepad &operator=(const jobject &gamepad);
-
-    Gamepad() = default;
-
     explicit Gamepad(const jobject& gamepad);
 
     ~Gamepad();
@@ -79,8 +73,9 @@ public:
 
 namespace gamepads
 {
+    extern std::unique_ptr<Gamepad> gamepad1;
+    extern std::unique_ptr<Gamepad> gamepad2;
+
     void update();
 
-    extern std::unique_ptr<Gamepad> gamepad1;
-    extern struct Gamepad gamepad2;
 }

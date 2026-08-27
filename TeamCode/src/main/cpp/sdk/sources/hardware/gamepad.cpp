@@ -1,9 +1,19 @@
 #include "sdk/headers/hardware/gamepad.h"
 
 
-Gamepad::Gamepad(const jobject& gamepad) : gamepad(gamepad) {
+Gamepad::Gamepad(const jobject& jgamepad) : gamepad(jgamepad) {
     // TODO: Add all the setup logic by caching the jmethodIDs and jfieldIDs
     JNIEnv* env = getEnv();
+
+    if (gamepadClazz == nullptr)
+    {
+        LOG_ERROR("-------------------------- gamepadClazz == nullptr -----------------------------");
+    }
+
+    if (gamepad == nullptr)
+    {
+        LOG_ERROR("-------------------------- gamepad object == nullptr -----------------------------");
+    }
 
 
     rumbleID = env->GetMethodID(gamepadClazz, "rumble", "(I)V");
@@ -24,13 +34,11 @@ Gamepad::Gamepad(const jobject& gamepad) : gamepad(gamepad) {
     right_stick_buttonID = env->GetFieldID(gamepadClazz, "right_stick_button", "Z");
 
     left_triggerID = env->GetFieldID(gamepadClazz, "left_trigger", "F");
-    left_triggerID = env->GetFieldID(gamepadClazz, "right_trigger", "F");
+    right_triggerID = env->GetFieldID(gamepadClazz, "right_trigger", "F");
     left_stick_xID = env->GetFieldID(gamepadClazz, "left_stick_x", "F");
     left_stick_yID = env->GetFieldID(gamepadClazz, "left_stick_y", "F");
     right_stick_xID = env->GetFieldID(gamepadClazz, "right_stick_x", "F");
     right_stick_yID = env->GetFieldID(gamepadClazz, "right_stick_y", "F");
-
-    update();
 }
 
 Gamepad::~Gamepad() {
@@ -46,6 +54,11 @@ Gamepad::~Gamepad() {
 
 void Gamepad::update() {
     JNIEnv* env = getEnv();
+
+    if (aID == nullptr)
+    {
+        LOG_ERROR(" _______________ aID null ____________________");
+    }
 
     a = env->GetBooleanField(gamepad, aID);
     b = env->GetBooleanField(gamepad, bID);
@@ -75,25 +88,6 @@ void Gamepad::rumble(const int &durationMillis) {
     env->CallVoidMethod(gamepad, rumbleID, durationMillis);
 }
 
-Gamepad &Gamepad::operator=(const Gamepad &gamepad)
-{
-    JNIEnv* env = getEnv();
-    if (this != &gamepad && gamepad.gamepad)
-    {
-        this->gamepad = env->NewGlobalRef(gamepad.gamepad);
-    }
-    return *this;
-}
-
-Gamepad &Gamepad::operator=(jobject const &gamepad) {
-    JNIEnv* env = getEnv();
-    if (this->gamepad)
-    {
-        env->DeleteGlobalRef(this->gamepad);
-    }
-    this->gamepad = gamepad;
-    return *this;
-}
 
 bool Gamepad::leftTriggerDown() const {
     return left_trigger > 0.5;
@@ -107,13 +101,13 @@ bool Gamepad::rightTriggerDown() const {
 namespace gamepads
 {
     std::unique_ptr<Gamepad> gamepad1 = nullptr;
-    // struct Gamepad gamepad1;
-    struct Gamepad gamepad2;
+    std::unique_ptr<Gamepad> gamepad2 = nullptr;
+
 
     void update()
     {
         gamepad1->update();
-        gamepad2.update();
+        gamepad2->update();
     }
 }
 

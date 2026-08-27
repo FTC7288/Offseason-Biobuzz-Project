@@ -1,14 +1,23 @@
-//
-// Created by Sam on 8/25/2026.
-//
+#pragma once
 
-#ifndef OFFSEASON_BIOBUZZ_PROJECT_DCMOTOREX_H
-#define OFFSEASON_BIOBUZZ_PROJECT_DCMOTOREX_H
+#include "sdk/util/util.h"
+
+class DcMotorEx {
+private:
+    // Chached Method IDs
+    jmethodID setPowerID = nullptr;
+
+public:
+    inline static jclass dcMotorExClazz = nullptr;
+    jobject dcMotorEx = nullptr;
 
 
-class dcMotorEx {
+    explicit DcMotorEx(const char* dcMotorName);
+
+    ~DcMotorEx();
+
+    // Methods
+
+    void setPower(double power) const;
 
 };
-
-
-#endif //OFFSEASON_BIOBUZZ_PROJECT_DCMOTOREX_H

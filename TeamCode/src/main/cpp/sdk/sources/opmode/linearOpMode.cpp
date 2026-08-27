@@ -18,7 +18,7 @@ namespace linearOpMode {
         jmethodID opModeIsActiveID = nullptr;
     }
 
-    // TODO: Make this sleep function safe to use during operation as it will still terminate and cause a error each time its stopped mid sleep
+    // TODO: Make this sleep function interruptible
     void sleep(long milliseconds) {
         JNIEnv* env = getEnv();
         jclass sleepClazz = env->FindClass("java/lang/Thread");

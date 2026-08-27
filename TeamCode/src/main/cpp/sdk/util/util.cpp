@@ -18,8 +18,10 @@ jclass findAndCreateGlobalRef(JNIEnv *env, const std::string& name)
     return reinterpret_cast<jclass>(globalRef);
 }
 
+
 namespace sdk
 {
     JavaVM* jvm = nullptr;
     jobject* opmode = nullptr;
+    jobject hardwareMap = nullptr;
 }

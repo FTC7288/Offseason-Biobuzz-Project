@@ -20,6 +20,11 @@ void initSDK(JNIEnv* env)
     linearOpMode::cachedMethodIDs::opModeIsActiveID = env->GetMethodID(linearOpMode::linearOpModeClazz, "opModeIsActive", "()Z");
 
 
+    jobject localHardwareMap = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "hardwareMap", "Lcom/qualcomm/robotcore/hardware/HardwareMap;"));
+    sdk::hardwareMap = env->NewGlobalRef(localHardwareMap);
+    env->DeleteLocalRef(localHardwareMap);
+
+
     telemetry::telemetryClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/Telemetry");
     jobject localTelemetryObject = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "telemetry", "Lorg/firstinspires/ftc/robotcore/external/Telemetry;"));
     telemetry::telemetry = env->NewGlobalRef(localTelemetryObject);
@@ -35,11 +40,11 @@ void initSDK(JNIEnv* env)
     gamepads::gamepad1 = std::make_unique<Gamepad>(env->NewGlobalRef(localGamepad1));
     env->DeleteLocalRef(localGamepad1);
 
-    jobject localGamepad2 = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "gamepad2", "Lcom/qualcomm/robotcore/hardware/Gamepad;"));
-    gamepads::gamepad2 = env->NewGlobalRef(localGamepad2);
+    jobject localGamepad2 = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "gamepad1", "Lcom/qualcomm/robotcore/hardware/Gamepad;"));
+    gamepads::gamepad2 = std::make_unique<Gamepad>(env->NewGlobalRef(localGamepad2));
     env->DeleteLocalRef(localGamepad2);
 
-
+    DcMotorEx::dcMotorExClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorEx");
 
 
 }
