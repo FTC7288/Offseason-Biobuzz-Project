@@ -17,4 +17,5 @@ namespace sdk
     extern JavaVM* jvm;
     extern jobject* opmode;
     extern jobject hardwareMap;
+    extern jmethodID getID;
 }

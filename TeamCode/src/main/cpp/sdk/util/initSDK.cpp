@@ -20,9 +20,12 @@ void initSDK(JNIEnv* env)
     linearOpMode::cachedMethodIDs::opModeIsActiveID = env->GetMethodID(linearOpMode::linearOpModeClazz, "opModeIsActive", "()Z");
 
 
-    jobject localHardwareMap = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "hardwareMap", "Lcom/qualcomm/robotcore/hardware/HardwareMap;"));
-    sdk::hardwareMap = env->NewGlobalRef(localHardwareMap);
-    env->DeleteLocalRef(localHardwareMap);
+    jobject localHardwareMapObject = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "hardwareMap", "Lcom/qualcomm/robotcore/hardware/HardwareMap;"));
+    sdk::hardwareMap = env->NewGlobalRef(localHardwareMapObject);
+    jclass localhardwareMapClass = env->GetObjectClass(sdk::hardwareMap);
+    sdk::getID = env->GetMethodID(localhardwareMapClass, "get", "(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Object;");
+    env->DeleteLocalRef(localHardwareMapObject);
+    env->DeleteLocalRef(localhardwareMapClass);
 
 
     telemetry::telemetryClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/Telemetry");
@@ -45,6 +48,8 @@ void initSDK(JNIEnv* env)
     env->DeleteLocalRef(localGamepad2);
 
     DcMotorEx::dcMotorExClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorEx");
+    DcMotorEx::directionClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorSimple$Direction");
+
 
 
 }

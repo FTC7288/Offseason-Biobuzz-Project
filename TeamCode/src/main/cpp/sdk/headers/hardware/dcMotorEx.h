@@ -4,11 +4,18 @@
 
 class DcMotorEx {
 private:
-    // Chached Method IDs
     jmethodID setPowerID = nullptr;
 
 public:
+    enum class Direction
+    {
+        FORWARD,
+        REVERSE
+    };
+
     inline static jclass dcMotorExClazz = nullptr;
+    inline static jclass directionClazz = nullptr;
+
     jobject dcMotorEx = nullptr;
 
 
@@ -19,5 +26,7 @@ public:
     // Methods
 
     void setPower(double power) const;
+
+    void setDirection(const Direction& direction) const;
 
 };

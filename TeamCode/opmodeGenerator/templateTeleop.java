@@ -2,9 +2,9 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@Autonomous(name = "<class_name>")
+@TeleOp(name = "<class_name>", group = "<group_name>")
 public class <class_name> extends LinearOpMode {
     static
     {

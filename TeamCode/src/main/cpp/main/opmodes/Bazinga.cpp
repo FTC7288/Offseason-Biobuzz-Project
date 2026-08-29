@@ -12,6 +12,7 @@ extern "C" void Bazinga(JNIEnv* env, jobject thiz)
     std::unique_ptr<DcMotorEx> lift = std::make_unique<DcMotorEx>("lift");
     std::unique_ptr<DcMotorEx> left = std::make_unique<DcMotorEx>("left");
     std::unique_ptr<DcMotorEx> right = std::make_unique<DcMotorEx>("right");
+    right->setDirection(DcMotorEx::Direction::REVERSE);
 
 
     waitForStart();
@@ -28,7 +29,7 @@ extern "C" void Bazinga(JNIEnv* env, jobject thiz)
 
 
         left->setPower(gamepad1->left_stick_y);
-        right->setPower(-gamepad1->right_stick_y);
+        right->setPower(gamepad1->right_stick_y);
 
         int liftDirection = (gamepad1->dpad_down) ? -1 : 1;
         lift->setPower((gamepad1->dpad_down || gamepad1->dpad_up) ? liftDirection * .5 : 0);
@@ -43,4 +44,4 @@ extern "C" void Bazinga(JNIEnv* env, jobject thiz)
     }
 }
 
-TeleOp(Bazinga)
+TeleOp(Bazinga, SIX_SEVEN_MANGO_MUSTARD)

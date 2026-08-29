@@ -26,14 +26,15 @@ public:
     }
 };
 
-#define TeleOp(name)                                                                    \
+
+#define TeleOp(name, group)                                                                    \
     static void __attribute__((constructor)) _register_##name()                         \
     {                                                                                   \
         __android_log_print(ANDROID_LOG_INFO, "sdk_loader", "Registering: %s", #name);  \
         OpmodeRegistry::registerOpMode(#name, name);                                    \
     }
 
-#define Autonomous(name)                                                                \
+#define Autonomous(name, group)                                                                \
     static void __attribute__((constructor)) _register_##name()                         \
     {                                                                                   \
         __android_log_print(ANDROID_LOG_INFO, "sdk_loader", "Registering: %s", #name);  \

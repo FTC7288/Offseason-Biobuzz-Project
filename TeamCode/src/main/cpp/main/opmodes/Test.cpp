@@ -16,4 +16,4 @@ extern "C" void Test(JNIEnv* env, jobject thiz)
 
 }
 
-Autonomous(Test)
+TeleOp(Test, GROUP2)
