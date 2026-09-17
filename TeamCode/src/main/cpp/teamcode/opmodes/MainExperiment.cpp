@@ -2,6 +2,7 @@
 
 using namespace linearOpMode;
 using namespace gamepads;
+using namespace Units;
 
 extern "C" void MainExperiment(JNIEnv* env, jobject thiz)
 {
@@ -10,8 +11,8 @@ extern "C" void MainExperiment(JNIEnv* env, jobject thiz)
     std::unique_ptr<LynxModule> controlHub = std::make_unique<LynxModule>("Control Hub");
     controlHub->setBulkCachingMode(LynxModule::BulkCachingMode::AUTO);
 
-    std::unique_ptr<LynxModule> expansionHub = std::make_unique<LynxModule>("Expansion Hub");
-    expansionHub->setBulkCachingMode(LynxModule::BulkCachingMode::AUTO);
+//    std::unique_ptr<LynxModule> expansionHub = std::make_unique<LynxModule>("Expansion Hub");
+//    expansionHub->setBulkCachingMode(LynxModule::BulkCachingMode::AUTO);
 
     std::unique_ptr<IMU> imu = std::make_unique<IMU>("imu");
     imu->initialize(Parameters::IMU::FacingDirection::RIGHT, Parameters::IMU::FacingDirection::UP);
@@ -20,7 +21,10 @@ extern "C" void MainExperiment(JNIEnv* env, jobject thiz)
 
     while(opModeIsActive())
     {
+        telemetry::update();
+        gamepads::update();
 
+        telemetry::addData("First Angle", std::to_string(imu->getRobotOrientation()->firstAngle).c_str());
     }
 
 }

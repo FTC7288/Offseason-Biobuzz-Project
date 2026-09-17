@@ -2,6 +2,7 @@
 
 #include "sdk/util/Util.h"
 #include "sdk/headers/navigation/Orientation.h"
+#include "sdk/headers/navigation/AngleUnit.h"
 
 
 
@@ -33,7 +34,7 @@ private:
     jobject imu = nullptr;
 
     jmethodID initializeID = nullptr;
-    jmethodID getRobotYawPitchRollAnglesID = nullptr;
+    jmethodID getRobotOrientationID = nullptr;
     jmethodID resetYawID = nullptr;
 
     Orientation orientation;
@@ -41,6 +42,7 @@ private:
     void updateOrientation();
 
 public:
+
 
     inline static jclass imuClazz = nullptr;
 

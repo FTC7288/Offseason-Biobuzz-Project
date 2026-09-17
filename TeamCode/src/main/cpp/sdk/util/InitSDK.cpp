@@ -64,5 +64,7 @@ void initSDK(JNIEnv* env, jobject* thiz)
     Parameters::IMU::logoFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$LogoFacingDirection");
     Parameters::IMU::usbFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$UsbFacingDirection");
 
+    Orientation::orientationClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/navigation/Orientation");
+
 
 }

@@ -12,4 +12,7 @@ public:
     float firstAngle = 0;
     float secondAngle = 0;
     float thirdAngle = 0;
+
+    Orientation();
+    ~Orientation();
 };

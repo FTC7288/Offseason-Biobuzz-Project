@@ -11,7 +11,10 @@ IMU::IMU(const char *ImuName)
 
     initializeID = env->GetMethodID(imuClazz, "initialize", "(Lcom/qualcomm/robotcore/hardware/IMU$Parameters;)Z");
     resetYawID = env->GetMethodID(imuClazz, "resetYaw", "()V");
-    getRobotYawPitchRollAnglesID = env->GetMethodID(imuClazz, "getRobotOrientation", "()Lorg/firstinspires/ftc/robotcore/external/navigation/Orientation;");
+    getRobotOrientationID = env->GetMethodID(imuClazz, "getRobotOrientation", "(Lorg/firstinspires/ftc/robotcore/external/navigation/AxesReference;Lorg/firstinspires/ftc/robotcore/external/navigation/AxesOrder;Lorg/firstinspires/ftc/robotcore/external/navigation/AngleUnit;)Lorg/firstinspires/ftc/robotcore/external/navigation/Orientation;");
+
+    orientation = *new Orientation();
+
 
 }
 
@@ -44,6 +47,7 @@ IMU::~IMU() {
         env->DeleteLocalRef(imu);
         imu = nullptr;
     }
+
 
 }
 
@@ -98,7 +102,8 @@ void IMU::resetYaw()
 
 void IMU::updateOrientation()
 {
-
+    JNIEnv* env = getEnv();
+    orientation.firstAngle = env->CallObjectMethod(imu, );
 }
 
 const Orientation* IMU::getRobotOrientation()
