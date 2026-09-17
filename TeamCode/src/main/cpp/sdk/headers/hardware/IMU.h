@@ -36,6 +36,9 @@ private:
     jmethodID getRobotYawPitchRollAnglesID = nullptr;
     jmethodID resetYawID = nullptr;
 
+    Orientation orientation;
+
+    void updateOrientation();
 
 public:
 
@@ -49,7 +52,7 @@ public:
 
     void resetYaw();
 
-    std::unique_ptr<YawPitchRollAngles> getRobotOrientation();
+    const Orientation* getRobotOrientation();
 };
 
 

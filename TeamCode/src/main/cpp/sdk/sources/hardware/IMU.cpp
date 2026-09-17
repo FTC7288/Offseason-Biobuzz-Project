@@ -44,6 +44,7 @@ IMU::~IMU() {
         env->DeleteLocalRef(imu);
         imu = nullptr;
     }
+
 }
 
 bool IMU::initialize(const Parameters::IMU::FacingDirection logoFacingDirection, const Parameters::IMU::FacingDirection usbFacingDirection)
@@ -95,10 +96,18 @@ void IMU::resetYaw()
     env->CallVoidMethod(imu,resetYawID);
 }
 
-std::unique_ptr<Orientation> IMU::getRobotOrientation()
+void IMU::updateOrientation()
 {
-    return {}; // TODO: FINISH MEEEEEEEEE
+
 }
+
+const Orientation* IMU::getRobotOrientation()
+{
+    updateOrientation();
+    return &orientation;
+}
+
+
 
 
 
