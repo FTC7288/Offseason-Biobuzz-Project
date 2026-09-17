@@ -1,10 +1,11 @@
 #pragma once
 
-#include "sdk/util/util.h"
+#include "sdk/util/Util.h"
 
 class Gamepad
 {
 private:
+    jobject gamepad = nullptr;
 
     jmethodID rumbleID = nullptr;
 
@@ -34,7 +35,7 @@ private:
 
 public:
     inline static jclass gamepadClazz = nullptr;
-    jobject gamepad = nullptr;
+
 
     bool a = false;
     bool b = false;

@@ -1,4 +1,4 @@
-#include "sdk/sdk.h"
+#include "sdk/Sdk.h"
 
 using namespace linearOpMode;
 using namespace gamepads;
@@ -6,13 +6,19 @@ using namespace gamepads;
 
 extern "C" void Bazinga(JNIEnv* env, jobject thiz)
 {
-    sdk::opmode=&thiz;
-    initSDK(env);
+    initSDK(env, &thiz);
 
-    std::unique_ptr<DcMotorEx> lift = std::make_unique<DcMotorEx>("lift");
-    std::unique_ptr<DcMotorEx> left = std::make_unique<DcMotorEx>("left");
-    std::unique_ptr<DcMotorEx> right = std::make_unique<DcMotorEx>("right");
+    std::unique_ptr<DcMotorEx> lift = std::make_unique<DcMotorEx>("lift", 0.01);
+    std::unique_ptr<DcMotorEx> left = std::make_unique<DcMotorEx>("left",0.01);
+    std::unique_ptr<DcMotorEx> right = std::make_unique<DcMotorEx>("right",0.01);
     right->setDirection(DcMotorEx::Direction::REVERSE);
+
+    std::unique_ptr<Servo> spin = std::make_unique<Servo>("spin", 0.01);
+
+    std::unique_ptr<LynxModule> controlHub = std::make_unique<LynxModule>("Control Hub");
+    controlHub->setBulkCachingMode(LynxModule::BulkCachingMode::AUTO);
+
+
 
 
     waitForStart();
@@ -22,6 +28,8 @@ extern "C" void Bazinga(JNIEnv* env, jobject thiz)
 
 
     while (opModeIsActive()) {
+
+
         telemetry::update();
         gamepads::update();
 
@@ -35,6 +43,7 @@ extern "C" void Bazinga(JNIEnv* env, jobject thiz)
         lift->setPower((gamepad1->dpad_down || gamepad1->dpad_up) ? liftDirection * .5 : 0);
 
 
+        spin->setPosition(gamepad1->right_trigger);
 
 
         double number = 10;

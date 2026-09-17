@@ -1,4 +1,4 @@
-#include "sdk/headers/opmode/telemetry.h"
+#include "sdk/headers/opmode/Telemetry.h"
 
 namespace telemetry
 {

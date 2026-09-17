@@ -1,8 +1,7 @@
-#include "sdk/headers/hardware/gamepad.h"
+#include "sdk/headers/hardware/Gamepad.h"
 
 
 Gamepad::Gamepad(const jobject& jgamepad) : gamepad(jgamepad) {
-    // TODO: Add all the setup logic by caching the jmethodIDs and jfieldIDs
     JNIEnv* env = getEnv();
 
     if (gamepadClazz == nullptr)
@@ -41,13 +40,18 @@ Gamepad::Gamepad(const jobject& jgamepad) : gamepad(jgamepad) {
     right_stick_yID = env->GetFieldID(gamepadClazz, "right_stick_y", "F");
 }
 
-Gamepad::~Gamepad() {
-    // TODO: Add all the cleanup logic
-
+Gamepad::~Gamepad()
+{
     JNIEnv* env = getEnv();
+
+    if (gamepadClazz)
+    {
+        env->DeleteGlobalRef(gamepadClazz);
+        gamepadClazz = nullptr;
+    }
     if (gamepad)
     {
-        env->DeleteGlobalRef(gamepad);
+        env->DeleteLocalRef(gamepad);
         gamepad = nullptr;
     }
 }

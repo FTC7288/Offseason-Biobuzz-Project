@@ -1,11 +1,10 @@
-#include "sdk/sdk.h"
+#include "sdk/Sdk.h"
 
 using namespace linearOpMode;
 
 extern "C" void Test(JNIEnv* env, jobject thiz)
 {
-    sdk::opmode=&thiz;
-    initSDK(env);
+    initSDK(env, &thiz);
 
     LOG_INFO("Running from c++");
     LOG_ERROR("HI");

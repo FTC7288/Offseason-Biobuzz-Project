@@ -1,10 +1,16 @@
 #pragma once
 
-#include "sdk/util/util.h"
+#include "sdk/util/Util.h"
 
-class DcMotorEx {
+class DcMotorEx
+{
 private:
+    jobject dcMotorEx = nullptr;
+
     jmethodID setPowerID = nullptr;
+    jmethodID setDirectionID = nullptr;
+    double motorPowerTolerance = 0;
+    double currentMotorPower = 0;
 
 public:
     enum class Direction
@@ -16,16 +22,12 @@ public:
     inline static jclass dcMotorExClazz = nullptr;
     inline static jclass directionClazz = nullptr;
 
-    jobject dcMotorEx = nullptr;
 
-
-    explicit DcMotorEx(const char* dcMotorName);
+    explicit DcMotorEx(const char* dcMotorName, double powerTolerance);
 
     ~DcMotorEx();
 
-    // Methods
-
-    void setPower(double power) const;
+    void setPower(double desiredMotorPower);
 
     void setDirection(const Direction& direction) const;
 

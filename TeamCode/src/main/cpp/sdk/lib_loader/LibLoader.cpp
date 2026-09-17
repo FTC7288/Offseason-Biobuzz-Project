@@ -1,4 +1,4 @@
-#include "lib_loader.h"
+#include "LibLoader.h"
 
 JNIEnv* get_env(JavaVM* jvm)
 {

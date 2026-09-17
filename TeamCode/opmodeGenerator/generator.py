@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 import shutil
 
-INPUT_DIR = "TeamCode/src/main/cpp/main"
+INPUT_DIR = "TeamCode/src/main/cpp/teamcode"
 OUTPUT_DIR = "TeamCode/src/main/java/org/firstinspires/ftc/teamcode/opmodes"
 
 AUTONOMOUS_PATH = "TeamCode/opmodeGenerator/templateAutonomous.java"
@@ -44,6 +44,8 @@ def createCurFiles():
             with open(newPath, 'w') as file:
                 file.write(data)
             print(f"Done Generating : {match.group('name')}")
+        else:
+            print("No Match Found")
 
 
 deleteCurFiles()

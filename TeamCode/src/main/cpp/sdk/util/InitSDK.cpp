@@ -1,13 +1,18 @@
-#include "initSDK.h"
+#include "InitSDK.h"
 
 
-void initSDK(JNIEnv* env)
+void initSDK(JNIEnv* env, jobject* thiz)
 {
-    if (sdk::opmode == nullptr)
+    if (thiz == nullptr)
     {
         LOG_ERROR("__________________________ COULD NOT FIND sdk::opmode _______________________________");
         return;
     }
+    else
+    {
+        sdk::opmode = thiz;
+    }
+
     jclass localClazz = env->GetObjectClass(*sdk::opmode);
     linearOpMode::linearOpModeClazz = reinterpret_cast<jclass>(env->NewGlobalRef(localClazz));
     env->DeleteLocalRef(localClazz);
@@ -47,9 +52,17 @@ void initSDK(JNIEnv* env)
     gamepads::gamepad2 = std::make_unique<Gamepad>(env->NewGlobalRef(localGamepad2));
     env->DeleteLocalRef(localGamepad2);
 
+
     DcMotorEx::dcMotorExClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorEx");
     DcMotorEx::directionClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorSimple$Direction");
-
+    Servo::servoClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/Servo");
+    LynxModule::lynxModuleClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/lynx/LynxModule");
+    LynxModule::bulkCachingModeClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/lynx/LynxModule$BulkCachingMode");
+    IMU::imuClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU");
+    Parameters::IMU::parametersClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU$Parameters");
+    Parameters::IMU::revHubOrientationOnRobotClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot");
+    Parameters::IMU::logoFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$LogoFacingDirection");
+    Parameters::IMU::usbFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$UsbFacingDirection");
 
 
 }

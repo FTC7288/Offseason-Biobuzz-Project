@@ -2,7 +2,7 @@
 // Created by samin on 8/23/2026.
 //
 
-#include "sdk/headers/opmode/linearOpMode.h"
+#include "sdk/headers/opmode/LinearOpMode.h"
 
 namespace linearOpMode {
 
@@ -18,7 +18,7 @@ namespace linearOpMode {
         jmethodID opModeIsActiveID = nullptr;
     }
 
-    // TODO: Make this sleep function interruptible
+    // FIXME: Make this sleep function interruptible
     void sleep(long milliseconds) {
         JNIEnv* env = getEnv();
         jclass sleepClazz = env->FindClass("java/lang/Thread");
