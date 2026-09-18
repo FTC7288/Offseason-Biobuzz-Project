@@ -15,15 +15,9 @@ Servo::Servo(const char *servoName, double positionTolerance) {
 Servo::~Servo() {
     JNIEnv* env = getEnv();
 
-    if (servoClazz)
-    {
-        env->DeleteGlobalRef(servoClazz);
-        servoClazz = nullptr;
-    }
     if (servo)
     {
-        env->DeleteLocalRef(servo);
-        servo = nullptr;
+        SAFE_DELETE_LOCAL(env,servo);
     }
 }
 

@@ -10,14 +10,8 @@ Orientation::~Orientation()
 {
     JNIEnv* env = getEnv();
 
-    if (orientationClazz)
-    {
-        env->DeleteGlobalRef(orientationClazz);
-        orientationClazz = nullptr;
-    }
     if (orientation)
     {
-        env->DeleteLocalRef(orientation);
-        orientation = nullptr;
+        SAFE_DELETE_LOCAL(env,orientation);
     }
 }

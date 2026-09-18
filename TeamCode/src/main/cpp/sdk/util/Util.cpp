@@ -22,7 +22,7 @@ jclass findAndCreateGlobalRef(JNIEnv *env, const std::string& name)
 namespace sdk
 {
     JavaVM* jvm = nullptr;
-    jobject* opmode = nullptr;
+    jobject opmode = nullptr;
     jobject hardwareMap = nullptr;
     jmethodID getID = nullptr;
 }

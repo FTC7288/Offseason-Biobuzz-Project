@@ -21,31 +21,9 @@ IMU::IMU(const char *ImuName)
 IMU::~IMU() {
     JNIEnv *env = getEnv();
 
-    if (imuClazz) {
-        env->DeleteGlobalRef(imuClazz);
-        imuClazz = nullptr;
-    }
-    if (Parameters::IMU::revHubOrientationOnRobotClazz) {
-        env->DeleteGlobalRef(Parameters::IMU::revHubOrientationOnRobotClazz);
-        Parameters::IMU::revHubOrientationOnRobotClazz = nullptr;
-    }
-    if (Parameters::IMU::parametersClazz) {
-        env->DeleteGlobalRef(Parameters::IMU::parametersClazz);
-        Parameters::IMU::parametersClazz = nullptr;
-    }
-    if (Parameters::IMU::logoFacingDirectionClazz) {
-        env->DeleteGlobalRef(Parameters::IMU::logoFacingDirectionClazz);
-        Parameters::IMU::logoFacingDirectionClazz = nullptr;
-    }
-    if (Parameters::IMU::usbFacingDirectionClazz)
-    {
-        env->DeleteGlobalRef(Parameters::IMU::usbFacingDirectionClazz);
-        Parameters::IMU::usbFacingDirectionClazz = nullptr;
-    }
     if (imu)
     {
-        env->DeleteLocalRef(imu);
-        imu = nullptr;
+        SAFE_DELETE_LOCAL(env,imu);
     }
 
 
@@ -87,11 +65,10 @@ bool IMU::initialize(const Parameters::IMU::FacingDirection logoFacingDirection,
     jobject parameters = env->NewObject(Parameters::IMU::parametersClazz,jCtorParameters,revHubOrientationOnRobot);
 
     return env->CallBooleanMethod(imu, initializeID, parameters);
-    env->DeleteLocalRef(revHubOrientationOnRobot);
-    env->DeleteLocalRef(parameters);
-    env->DeleteLocalRef(jLogoFacingDirection);
-    env->DeleteLocalRef(jUsbFacingDirection);
-
+    SAFE_DELETE_LOCAL(env,revHubOrientationOnRobot);
+    SAFE_DELETE_LOCAL(env,parameters);
+    SAFE_DELETE_LOCAL(env,jLogoFacingDirection);
+    SAFE_DELETE_LOCAL(env,jUsbFacingDirection);
 }
 
 void IMU::resetYaw()
@@ -103,7 +80,7 @@ void IMU::resetYaw()
 void IMU::updateOrientation()
 {
     JNIEnv* env = getEnv();
-    orientation.firstAngle = env->CallObjectMethod(imu, );
+    //orientation.firstAngle = env->CallObjectMethod(imu, );
 }
 
 const Orientation* IMU::getRobotOrientation()

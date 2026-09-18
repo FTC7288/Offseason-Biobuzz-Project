@@ -10,12 +10,15 @@ project("sdk_loader")
 file(GLOB_RECURSE LOADER_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/sdk/*.cpp")
 file(GLOB_RECURSE OPMODE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/teamcode/*.cpp")
 file(GLOB_RECURSE LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/lib_loader/*.cpp")
+file(GLOB_RECURSE CUSTOM_LIB "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.cpp")
+
 
 
 add_library(sdk_loader SHARED
         ${LOADER_SOURCES}
         ${OPMODE_SOURCES}
         ${LIB_SOURCES}
+        ${CUSTOM_LIB}
 )
 
 target_include_directories(sdk_loader PRIVATE

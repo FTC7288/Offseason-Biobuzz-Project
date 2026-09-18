@@ -29,36 +29,36 @@ namespace linearOpMode {
     void idle()
     {
         JNIEnv* env = getEnv();
-        env->CallVoidMethod(*sdk::opmode,cachedMethodIDs::idleID);
+        env->CallVoidMethod(sdk::opmode,cachedMethodIDs::idleID);
     }
 
     void terminateOpModeNow()
     {
         JNIEnv* env = getEnv();
-        env->CallVoidMethod(*sdk::opmode,cachedMethodIDs::terminateOpModeNowID);
+        env->CallVoidMethod(sdk::opmode,cachedMethodIDs::terminateOpModeNowID);
     }
 
     void waitForStart()
     {
         JNIEnv* env = getEnv();
-        env->CallVoidMethod(*sdk::opmode,cachedMethodIDs::waitForStartID);
+        env->CallVoidMethod(sdk::opmode,cachedMethodIDs::waitForStartID);
     }
 
     bool opModeInInit()
     {
         JNIEnv* env = getEnv();
-        return env->CallBooleanMethod(*sdk::opmode,cachedMethodIDs::opModeInInitID);
+        return env->CallBooleanMethod(sdk::opmode,cachedMethodIDs::opModeInInitID);
     }
 
     bool isStopRequested()
     {
         JNIEnv* env = getEnv();
-        return env->CallBooleanMethod(*sdk::opmode,cachedMethodIDs::isStopRequestedID);
+        return env->CallBooleanMethod(sdk::opmode,cachedMethodIDs::isStopRequestedID);
     }
 
     bool opModeIsActive()
     {
         JNIEnv* env = getEnv();
-        return env->CallBooleanMethod(*sdk::opmode,cachedMethodIDs::opModeIsActiveID);
+        return env->CallBooleanMethod(sdk::opmode,cachedMethodIDs::opModeIsActiveID);
     }
 }

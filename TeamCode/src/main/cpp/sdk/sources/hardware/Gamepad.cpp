@@ -44,15 +44,9 @@ Gamepad::~Gamepad()
 {
     JNIEnv* env = getEnv();
 
-    if (gamepadClazz)
-    {
-        env->DeleteGlobalRef(gamepadClazz);
-        gamepadClazz = nullptr;
-    }
     if (gamepad)
     {
-        env->DeleteLocalRef(gamepad);
-        gamepad = nullptr;
+        SAFE_DELETE_GLOBAL(env, gamepad);
     }
 }
 

@@ -15,20 +15,9 @@ LynxModule::~LynxModule()
 {
     JNIEnv* env = getEnv();
 
-    if (lynxModuleClazz)
-    {
-        env->DeleteGlobalRef(lynxModuleClazz);
-        lynxModuleClazz = nullptr;
-    }
-    if (bulkCachingModeClazz)
-    {
-        env->DeleteLocalRef(bulkCachingModeClazz);
-        bulkCachingModeClazz = nullptr;
-    }
     if (lynxModule)
     {
-        env->DeleteLocalRef(lynxModule);
-        lynxModule = nullptr;
+        SAFE_DELETE_LOCAL(env,lynxModule);
     }
 }
 

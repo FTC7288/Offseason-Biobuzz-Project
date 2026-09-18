@@ -1,21 +1,23 @@
 #include "InitSDK.h"
 
 
-void initSDK(JNIEnv* env, jobject* thiz)
+void initSDK(JNIEnv* env, jobject thiz)
 {
     if (thiz == nullptr)
     {
         LOG_ERROR("__________________________ COULD NOT FIND sdk::opmode _______________________________");
         return;
     }
-    else
-    {
-        sdk::opmode = thiz;
-    }
 
-    jclass localClazz = env->GetObjectClass(*sdk::opmode);
+    if (sdk::opmode != nullptr)
+    {
+        env->DeleteGlobalRef(sdk::opmode);
+    }
+    sdk::opmode = env->NewGlobalRef(thiz);
+
+    jclass localClazz = env->GetObjectClass(sdk::opmode);
     linearOpMode::linearOpModeClazz = reinterpret_cast<jclass>(env->NewGlobalRef(localClazz));
-    env->DeleteLocalRef(localClazz);
+    SAFE_DELETE_LOCAL(env, localClazz);
 
     linearOpMode::cachedMethodIDs::idleID = env->GetMethodID(linearOpMode::linearOpModeClazz, "idle", "()V");
     linearOpMode::cachedMethodIDs::terminateOpModeNowID = env->GetMethodID(linearOpMode::linearOpModeClazz, "terminateOpModeNow", "()V");
@@ -25,18 +27,18 @@ void initSDK(JNIEnv* env, jobject* thiz)
     linearOpMode::cachedMethodIDs::opModeIsActiveID = env->GetMethodID(linearOpMode::linearOpModeClazz, "opModeIsActive", "()Z");
 
 
-    jobject localHardwareMapObject = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "hardwareMap", "Lcom/qualcomm/robotcore/hardware/HardwareMap;"));
+    jobject localHardwareMapObject = env->GetObjectField(sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "hardwareMap", "Lcom/qualcomm/robotcore/hardware/HardwareMap;"));
     sdk::hardwareMap = env->NewGlobalRef(localHardwareMapObject);
     jclass localhardwareMapClass = env->GetObjectClass(sdk::hardwareMap);
     sdk::getID = env->GetMethodID(localhardwareMapClass, "get", "(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Object;");
-    env->DeleteLocalRef(localHardwareMapObject);
-    env->DeleteLocalRef(localhardwareMapClass);
+    SAFE_DELETE_LOCAL(env, localHardwareMapObject);
+    SAFE_DELETE_LOCAL(env, localhardwareMapClass);
 
 
     telemetry::telemetryClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/Telemetry");
-    jobject localTelemetryObject = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "telemetry", "Lorg/firstinspires/ftc/robotcore/external/Telemetry;"));
+    jobject localTelemetryObject = env->GetObjectField(sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "telemetry", "Lorg/firstinspires/ftc/robotcore/external/Telemetry;"));
     telemetry::telemetry = env->NewGlobalRef(localTelemetryObject);
-    env->DeleteLocalRef(localTelemetryObject);
+    SAFE_DELETE_LOCAL(env, localTelemetryObject);
 
     telemetry::cachedMethodIDs::updateID = env->GetMethodID(telemetry::telemetryClazz, "update", "()Z");
     telemetry::cachedMethodIDs::addDataID = env->GetMethodID(telemetry::telemetryClazz, "addData", "(Ljava/lang/String;Ljava/lang/Object;)Lorg/firstinspires/ftc/robotcore/external/Telemetry$Item;");;
@@ -44,13 +46,13 @@ void initSDK(JNIEnv* env, jobject* thiz)
 
 
     Gamepad::gamepadClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/Gamepad");
-    jobject localGamepad1 = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "gamepad1", "Lcom/qualcomm/robotcore/hardware/Gamepad;"));
+    jobject localGamepad1 = env->GetObjectField(sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "gamepad1", "Lcom/qualcomm/robotcore/hardware/Gamepad;"));
     gamepads::gamepad1 = std::make_unique<Gamepad>(env->NewGlobalRef(localGamepad1));
-    env->DeleteLocalRef(localGamepad1);
+    SAFE_DELETE_LOCAL(env, localGamepad1);
 
-    jobject localGamepad2 = env->GetObjectField(*sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "gamepad1", "Lcom/qualcomm/robotcore/hardware/Gamepad;"));
+    jobject localGamepad2 = env->GetObjectField(sdk::opmode, env->GetFieldID(linearOpMode::linearOpModeClazz, "gamepad2", "Lcom/qualcomm/robotcore/hardware/Gamepad;"));
     gamepads::gamepad2 = std::make_unique<Gamepad>(env->NewGlobalRef(localGamepad2));
-    env->DeleteLocalRef(localGamepad2);
+    SAFE_DELETE_LOCAL(env, localGamepad2);
 
 
     DcMotorEx::dcMotorExClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorEx");
@@ -63,8 +65,77 @@ void initSDK(JNIEnv* env, jobject* thiz)
     Parameters::IMU::revHubOrientationOnRobotClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot");
     Parameters::IMU::logoFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$LogoFacingDirection");
     Parameters::IMU::usbFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$UsbFacingDirection");
-
     Orientation::orientationClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/navigation/Orientation");
+}
 
 
+void deleteSDK(JNIEnv* env)
+{
+    if (gamepads::gamepad1 != nullptr)
+    {
+        gamepads::gamepad1.reset();
+    }
+    if (gamepads::gamepad2 != nullptr)
+    {
+        gamepads::gamepad2.reset();
+    }
+
+    if (sdk::opmode != nullptr) {
+        SAFE_DELETE_GLOBAL(env, sdk::opmode);
+    }
+    if (sdk::hardwareMap != nullptr) {
+        SAFE_DELETE_GLOBAL(env, sdk::hardwareMap);
+    }
+    if (linearOpMode::linearOpModeClazz != nullptr) {
+        SAFE_DELETE_GLOBAL(env, linearOpMode::linearOpModeClazz);
+    }
+    if (telemetry::telemetry != nullptr) {
+        SAFE_DELETE_GLOBAL(env, telemetry::telemetry);
+    }
+    if (telemetry::telemetryClazz != nullptr) {
+        SAFE_DELETE_GLOBAL(env, telemetry::telemetryClazz);
+    }
+    if (Gamepad::gamepadClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, Gamepad::gamepadClazz);
+    }
+    if (DcMotorEx::dcMotorExClazz != nullptr) {
+        SAFE_DELETE_GLOBAL(env, DcMotorEx::dcMotorExClazz);
+    }
+    if (DcMotorEx::directionClazz)
+    {
+        SAFE_DELETE_GLOBAL(env, DcMotorEx::directionClazz);
+    }
+    if (Servo::servoClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, Servo::servoClazz);
+    }
+    if (LynxModule::lynxModuleClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, LynxModule::lynxModuleClazz);
+    }
+    if (LynxModule::bulkCachingModeClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, LynxModule::bulkCachingModeClazz);
+    }
+    if (IMU::imuClazz != nullptr) {
+        SAFE_DELETE_GLOBAL(env, IMU::imuClazz);
+    }
+    if (Parameters::IMU::revHubOrientationOnRobotClazz != nullptr) {
+        SAFE_DELETE_GLOBAL(env, Parameters::IMU::revHubOrientationOnRobotClazz);
+    }
+    if (Parameters::IMU::parametersClazz != nullptr) {
+        SAFE_DELETE_GLOBAL(env, Parameters::IMU::parametersClazz);
+    }
+    if (Parameters::IMU::logoFacingDirectionClazz != nullptr) {
+        SAFE_DELETE_GLOBAL(env, Parameters::IMU::logoFacingDirectionClazz);
+    }
+    if (Parameters::IMU::usbFacingDirectionClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, Parameters::IMU::usbFacingDirectionClazz);
+    }
+    if (Orientation::orientationClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, Orientation::orientationClazz);
+    }
 }

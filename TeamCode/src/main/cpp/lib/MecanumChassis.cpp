@@ -1,11 +1,18 @@
-#include "mecanumChassis.h"
+#include "MecanumChassis.h"
 
-MecanumChassis::MecanumChassis(std::unique_ptr<DcMotorEx> frontLeft,std::unique_ptr<DcMotorEx> frontRight,std::unique_ptr<DcMotorEx> backLeft,std::unique_ptr<DcMotorEx> backRight)
+#include <utility>
+
+MecanumChassis::MecanumChassis(std::shared_ptr<DcMotorEx> frontLeft,std::shared_ptr<DcMotorEx> frontRight,std::shared_ptr<DcMotorEx> backLeft,std::shared_ptr<DcMotorEx> backRight)
 {
-    frontLeft->setDirection(DcMotorEx::Direction::REVERSE);
-    frontRight->setDirection(DcMotorEx::Direction::FORWARD);
-    backLeft->setDirection(DcMotorEx::Direction::REVERSE);
-    backRight->setDirection(DcMotorEx::Direction::FORWARD);
+    this->frontLeft = std::move(frontLeft);
+    this->frontRight = std::move(frontRight);
+    this->backLeft = std::move(backLeft);
+    this->backRight = std::move(backRight);
+
+    this->frontLeft->setDirection(DcMotorEx::Direction::REVERSE);
+    this->frontRight->setDirection(DcMotorEx::Direction::FORWARD);
+    this->backLeft->setDirection(DcMotorEx::Direction::REVERSE);
+    this->backRight->setDirection(DcMotorEx::Direction::FORWARD);
 }
 
 void MecanumChassis::driveFieldCentric(double stickY, double stickX, double stickRotation,double botHeading)
@@ -25,4 +32,12 @@ void MecanumChassis::driveFieldCentric(double stickY, double stickX, double stic
     frontRight->setPower((rotationY - rotationX - stickRotation) / denominator);
     backLeft->setPower((rotationY - rotationX + stickRotation) / denominator);
     backRight->setPower((rotationY + rotationX - stickRotation) / denominator);
+}
+
+void MecanumChassis::driveRobotCentric(double stickY, double stickX, double stickRotation)
+{
+    frontLeft->setPower(stickY + stickX + stickRotation);
+    frontRight->setPower(stickY - stickX - stickRotation);
+    backLeft->setPower(stickY + stickX - stickRotation);
+    backRight->setPower(stickY - stickX + stickRotation);
 }

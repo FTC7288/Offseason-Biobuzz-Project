@@ -19,19 +19,9 @@ DcMotorEx::~DcMotorEx()
 {
     JNIEnv* env = getEnv();
 
-    if (dcMotorExClazz)
-    {
-        env->DeleteGlobalRef(dcMotorExClazz);
-        dcMotorExClazz = nullptr;
-    }
-    if (directionClazz)
-    {
-        env->DeleteGlobalRef(directionClazz);
-        directionClazz = nullptr;
-    }
     if (dcMotorEx)
     {
-        env->DeleteLocalRef(dcMotorEx);
+        SAFE_DELETE_LOCAL(env, dcMotorEx);
         dcMotorEx = nullptr;
     }
 }
@@ -52,5 +42,5 @@ void DcMotorEx::setDirection(const DcMotorEx::Direction &direction) const
     JNIEnv* env = getEnv();
     jobject jdirection = env->GetStaticObjectField(directionClazz, env->GetStaticFieldID(directionClazz,(direction == Direction::FORWARD) ? "FORWARD" : "REVERSE" ,"Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;"));
     env->CallVoidMethod(dcMotorEx, setDirectionID, jdirection);
-    env->DeleteLocalRef(jdirection);
+    SAFE_DELETE_LOCAL(env, jdirection);
 }
