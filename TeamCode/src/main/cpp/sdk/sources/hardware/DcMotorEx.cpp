@@ -1,7 +1,5 @@
 #include "sdk/headers/hardware/DcMotorEx.h"
 
-// TODO: Add getPosition() and getVelocity()
-
 DcMotorEx::DcMotorEx(const char *dcMotorName, double powerTolerance)
 {
     JNIEnv* env = getEnv();
@@ -12,6 +10,9 @@ DcMotorEx::DcMotorEx(const char *dcMotorName, double powerTolerance)
 
     setPowerID = env->GetMethodID(dcMotorExClazz, "setPower", "(D)V");
     setDirectionID = env->GetMethodID(dcMotorExClazz, "setDirection", "(Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;)V");
+    getVelocityID = env->GetMethodID(dcMotorExClazz, "getVelocity", "()D");
+    getCurrentPositionID = env->GetMethodID(dcMotorExClazz, "getCurrentPosition", "()D");
+
     motorPowerTolerance = powerTolerance;
 }
 
@@ -43,4 +44,16 @@ void DcMotorEx::setDirection(const DcMotorEx::Direction &direction) const
     jobject jdirection = env->GetStaticObjectField(directionClazz, env->GetStaticFieldID(directionClazz,(direction == Direction::FORWARD) ? "FORWARD" : "REVERSE" ,"Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;"));
     env->CallVoidMethod(dcMotorEx, setDirectionID, jdirection);
     SAFE_DELETE_LOCAL(env, jdirection);
+}
+
+double DcMotorEx::getVelocity()
+{
+    JNIEnv* env = getEnv();
+    return env->CallDoubleMethod(dcMotorEx,getVelocityID);
+}
+
+double DcMotorEx::getCurrentPosition()
+{
+    JNIEnv* env = getEnv();
+    return env->CallDoubleMethod(dcMotorEx,getCurrentPositionID);
 }

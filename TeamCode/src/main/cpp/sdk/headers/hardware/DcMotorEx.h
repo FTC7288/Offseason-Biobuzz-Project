@@ -9,6 +9,8 @@ private:
 
     jmethodID setPowerID = nullptr;
     jmethodID setDirectionID = nullptr;
+    jmethodID getVelocityID = nullptr;
+    jmethodID getCurrentPositionID = nullptr;
     double motorPowerTolerance = 0;
     double currentMotorPower = 0;
 
@@ -30,5 +32,9 @@ public:
     void setPower(double desiredMotorPower);
 
     void setDirection(const Direction& direction) const;
+
+    double getVelocity();
+
+    double getCurrentPosition();
 
 };
