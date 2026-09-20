@@ -30,4 +30,4 @@ extern "C" void MainExperiment(JNIEnv* env, jobject thiz)
     deleteSDK(env);
 }
 
-TeleOp(MainExperiment, dummy)
+//TeleeOp(MainExperiment, dummy)

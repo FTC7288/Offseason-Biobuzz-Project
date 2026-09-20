@@ -2,6 +2,7 @@
 
 #include "sdk/util/Util.h"
 #include "sdk/headers/navigation/Orientation.h"
+#include "sdk/headers/navigation/YawPitchRollAngles.h"
 #include "sdk/headers/navigation/AngleUnit.h"
 
 
@@ -35,9 +36,13 @@ private:
 
     jmethodID initializeID = nullptr;
     jmethodID getRobotOrientationID = nullptr;
+    jmethodID getRobotYawPitchRollAnglesID = nullptr;
     jmethodID resetYawID = nullptr;
 
     Orientation orientation;
+
+    YawPitchRollAngles yawPitchRollAngles;
+    jobject globalYawPitchRollAngles = nullptr;
 
     void updateOrientation();
 
@@ -55,6 +60,7 @@ public:
     void resetYaw();
 
     const Orientation* getRobotOrientation();
+    const YawPitchRollAngles* getYawPitchRollAngles();
 };
 
 

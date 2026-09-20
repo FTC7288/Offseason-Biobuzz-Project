@@ -5,6 +5,7 @@
 class DcMotorEx
 {
 private:
+    const char* dcMotorName = nullptr;
     jobject dcMotorEx = nullptr;
 
     jmethodID setPowerID = nullptr;

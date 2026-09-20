@@ -22,6 +22,11 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
             backRight
             );
 
+    std::unique_ptr<IMU> imu = std::make_unique<IMU>("imu");
+
+    LOG_INFO("---------- initialized IMU -------");
+    imu->initialize(Parameters::IMU::FacingDirection::UP, Parameters::IMU::FacingDirection::BACKWARD);
+
 
     waitForStart();
 
@@ -30,10 +35,19 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
         telemetry::update();
         gamepads::update();
 
-        robotChassis.driveRobotCentric((double)gamepad1->left_stick_y, (double)gamepad1->left_stick_x, (double)gamepad1->right_stick_x);
+        if (gamepad1->start)
+        {
+            imu->resetYaw();
+        }
+
+        double imuAngle = imu->getYawPitchRollAngles()->getYaw(AngleUnit::RADIANS);
+
+        robotChassis.driveFieldCentric(gamepad1->left_stick_y, -gamepad1->left_stick_x, -gamepad1->right_stick_x,imuAngle);
+
+        telemetry::addData("IMU ANGLE", std::to_string(imuAngle).c_str());
     }
 
     deleteSDK(env);
 }
 
-TeleOp(PollenBot, dummy)
+//TeleeOp(PollenBot, dummy)

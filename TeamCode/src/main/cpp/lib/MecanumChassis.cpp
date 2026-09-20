@@ -9,37 +9,18 @@ MecanumChassis::MecanumChassis(std::shared_ptr<DcMotorEx> frontLeft,std::shared_
     this->backLeft = std::move(backLeft);
     this->backRight = std::move(backRight);
 
-    this->frontLeft->setDirection(DcMotorEx::Direction::REVERSE);
+    this->frontLeft->setDirection(DcMotorEx::Direction::FORWARD);
     this->frontRight->setDirection(DcMotorEx::Direction::FORWARD);
-    this->backLeft->setDirection(DcMotorEx::Direction::REVERSE);
+    this->backLeft->setDirection(DcMotorEx::Direction::FORWARD);
     this->backRight->setDirection(DcMotorEx::Direction::FORWARD);
-}
-
-void MecanumChassis::driveFieldCentric(double stickY, double stickX, double stickRotation,double botHeading)
-{
-    double rotationX = stickX * cos(botHeading) - stickY * sin(botHeading);
-    double rotationY = stickX * sin(botHeading) + stickY * cos(botHeading);
-
-    double total = abs(rotationX + rotationY + stickRotation);
-    double denominator = (total > 1) ? total : 1;
-
-//    double frontLeftPower = (rotationY + rotationX + stickRotation) / denominator;
-//    double frontRightPower = (rotationY - rotationX - stickRotation) / denominator;
-//    double backLeftPower = (rotationY - rotationX + stickRotation) / denominator;
-//    double backRightPower = (rotationY + rotationX - stickRotation) / denominator;
-
-    frontLeft->setPower((rotationY + rotationX + stickRotation) / denominator);
-    frontRight->setPower((rotationY - rotationX - stickRotation) / denominator);
-    backLeft->setPower((rotationY - rotationX + stickRotation) / denominator);
-    backRight->setPower((rotationY + rotationX - stickRotation) / denominator);
 }
 
 void MecanumChassis::driveRobotCentric(double stickY, double stickX, double stickRotation)
 {
     double frontLeftPower = stickY + stickX + stickRotation;
     double frontRightPower = stickY - stickX - stickRotation;
-    double backLeftPower = stickY + stickX - stickRotation;
-    double backRightPower = stickY - stickX + stickRotation;
+    double backLeftPower = stickY - stickX + stickRotation;
+    double backRightPower = stickY + stickX - stickRotation;
 
     double maxPower = std::max({std::abs(frontLeftPower), std::abs(frontRightPower), std::abs(backLeftPower), std::abs(backRightPower)});
 
@@ -50,9 +31,23 @@ void MecanumChassis::driveRobotCentric(double stickY, double stickX, double stic
         backLeftPower /= maxPower;
         backRightPower /= maxPower;
     }
-
     frontLeft->setPower(frontLeftPower);
     frontRight->setPower(frontRightPower);
     backLeft->setPower(backLeftPower);
     backRight->setPower(backRightPower);
 }
+
+void MecanumChassis::driveFieldCentric(double stickY, double stickX, double stickRotation,double botHeading)
+{
+    double theta = std::atan2(stickY,stickX);
+    double r = std::hypot(stickX,stickY);
+
+    theta = std::remainder(theta - botHeading,2.0 * M_PI);
+
+    stickY = r * std::sin(theta);
+    stickX = r * std::cos(theta);
+
+    driveRobotCentric(stickY, stickX, stickRotation);
+}
+
+

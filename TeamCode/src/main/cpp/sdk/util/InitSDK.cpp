@@ -57,16 +57,25 @@ void initSDK(JNIEnv* env, jobject thiz)
 
     DcMotorEx::dcMotorExClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorEx");
     DcMotorEx::directionClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorSimple$Direction");
+
     Servo::servoClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/Servo");
     LynxModule::lynxModuleClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/lynx/LynxModule");
     LynxModule::bulkCachingModeClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/lynx/LynxModule$BulkCachingMode");
+
     IMU::imuClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU");
     Parameters::IMU::parametersClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU$Parameters");
     Parameters::IMU::revHubOrientationOnRobotClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot");
     Parameters::IMU::logoFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$LogoFacingDirection");
     Parameters::IMU::usbFacingDirectionClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/rev/RevHubOrientationOnRobot$UsbFacingDirection");
+
     Orientation::orientationClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/navigation/Orientation");
+    YawPitchRollAngles::yawPitchRollAnglesClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/navigation/YawPitchRollAngles");
+    AngleUnit::angleUnitClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/navigation/AngleUnit");
+    AngleUnit::DEGREES = env->NewGlobalRef(env->GetStaticObjectField(AngleUnit::angleUnitClazz, env->GetStaticFieldID(AngleUnit::angleUnitClazz,"DEGREES" ,"Lorg/firstinspires/ftc/robotcore/external/navigation/AngleUnit;")));
+    AngleUnit::RADIANS = env->NewGlobalRef(env->GetStaticObjectField(AngleUnit::angleUnitClazz, env->GetStaticFieldID(AngleUnit::angleUnitClazz,"RADIANS" ,"Lorg/firstinspires/ftc/robotcore/external/navigation/AngleUnit;")));
+
 }
+
 
 
 void deleteSDK(JNIEnv* env)
@@ -137,5 +146,20 @@ void deleteSDK(JNIEnv* env)
     if (Orientation::orientationClazz != nullptr)
     {
         SAFE_DELETE_GLOBAL(env, Orientation::orientationClazz);
+    }
+    if (YawPitchRollAngles::yawPitchRollAnglesClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, YawPitchRollAngles::yawPitchRollAnglesClazz);
+    }
+    if (AngleUnit::angleUnitClazz != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, AngleUnit::angleUnitClazz);
+    }
+    if (AngleUnit::DEGREES != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, AngleUnit::DEGREES);
+    }if (AngleUnit::RADIANS != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, AngleUnit::RADIANS);
     }
 }

@@ -15,8 +15,8 @@ public:
 
     MecanumChassis(std::shared_ptr<DcMotorEx> frontLeft,std::shared_ptr<DcMotorEx> frontRight,std::shared_ptr<DcMotorEx> backLeft,std::shared_ptr <DcMotorEx> backRight);
 
-    void driveFieldCentric(double stickY, double stickX, double stickRotation, double botHeading);
     void driveRobotCentric(double stickY, double stickX, double stickRotation);
+    void driveFieldCentric(double stickY, double stickX, double stickRotation, double botHeading);
 
 };
 
