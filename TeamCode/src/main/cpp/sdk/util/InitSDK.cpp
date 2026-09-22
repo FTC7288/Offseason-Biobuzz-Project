@@ -56,11 +56,19 @@ void initSDK(JNIEnv* env, jobject thiz)
 
 
     DcMotorEx::dcMotorExClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorEx");
-    DcMotorEx::directionClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorSimple$Direction");
+    DcMotorEx::Direction::directionClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorSimple$Direction");
+    DcMotorEx::Direction::FORWARD = env->NewGlobalRef(env->GetStaticObjectField(DcMotorEx::Direction::directionClazz, env->GetStaticFieldID(DcMotorEx::Direction::directionClazz,"FORWARD","Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;")));
+    DcMotorEx::Direction::REVERSE = env->NewGlobalRef(env->GetStaticObjectField(DcMotorEx::Direction::directionClazz, env->GetStaticFieldID(DcMotorEx::Direction::directionClazz,"REVERSE","Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;")));
+
 
     Servo::servoClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/Servo");
+
     LynxModule::lynxModuleClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/lynx/LynxModule");
-    LynxModule::bulkCachingModeClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/lynx/LynxModule$BulkCachingMode");
+    LynxModule::BulkCachingMode::bulkCachingModeClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/lynx/LynxModule$BulkCachingMode");
+    LynxModule::BulkCachingMode::AUTO = env->NewGlobalRef(env->GetStaticObjectField(LynxModule::BulkCachingMode::bulkCachingModeClazz, env->GetStaticFieldID(LynxModule::BulkCachingMode::bulkCachingModeClazz,"AUTO","Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;")));
+    LynxModule::BulkCachingMode::MANUAL = env->NewGlobalRef(env->GetStaticObjectField(LynxModule::BulkCachingMode::bulkCachingModeClazz, env->GetStaticFieldID(LynxModule::BulkCachingMode::bulkCachingModeClazz,"MANUAL","Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;")));
+    LynxModule::BulkCachingMode::OFF = env->NewGlobalRef(env->GetStaticObjectField(LynxModule::BulkCachingMode::bulkCachingModeClazz, env->GetStaticFieldID(LynxModule::BulkCachingMode::bulkCachingModeClazz,"OFF","Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;")));
+
 
     IMU::imuClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU");
     Parameters::IMU::parametersClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU$Parameters");
@@ -88,7 +96,7 @@ void deleteSDK(JNIEnv* env)
     {
         gamepads::gamepad2.reset();
     }
-
+    // ----------------
     if (sdk::opmode != nullptr) {
         SAFE_DELETE_GLOBAL(env, sdk::opmode);
     }
@@ -98,55 +106,87 @@ void deleteSDK(JNIEnv* env)
     if (linearOpMode::linearOpModeClazz != nullptr) {
         SAFE_DELETE_GLOBAL(env, linearOpMode::linearOpModeClazz);
     }
+    // ----------------
     if (telemetry::telemetry != nullptr) {
         SAFE_DELETE_GLOBAL(env, telemetry::telemetry);
     }
     if (telemetry::telemetryClazz != nullptr) {
         SAFE_DELETE_GLOBAL(env, telemetry::telemetryClazz);
     }
+    // ----------------
     if (Gamepad::gamepadClazz != nullptr)
     {
         SAFE_DELETE_GLOBAL(env, Gamepad::gamepadClazz);
     }
+    // ----------------
     if (DcMotorEx::dcMotorExClazz != nullptr) {
         SAFE_DELETE_GLOBAL(env, DcMotorEx::dcMotorExClazz);
     }
-    if (DcMotorEx::directionClazz)
+    if (DcMotorEx::Direction::directionClazz)
     {
-        SAFE_DELETE_GLOBAL(env, DcMotorEx::directionClazz);
+        SAFE_DELETE_GLOBAL(env, DcMotorEx::Direction::directionClazz);
     }
+    if (DcMotorEx::Direction::FORWARD)
+    {
+        SAFE_DELETE_GLOBAL(env, DcMotorEx::Direction::FORWARD);
+    }
+    if (DcMotorEx::Direction::REVERSE)
+    {
+        SAFE_DELETE_GLOBAL(env, DcMotorEx::Direction::REVERSE);
+    }
+    // ----------------
     if (Servo::servoClazz != nullptr)
     {
         SAFE_DELETE_GLOBAL(env, Servo::servoClazz);
     }
+    // ----------------
     if (LynxModule::lynxModuleClazz != nullptr)
     {
         SAFE_DELETE_GLOBAL(env, LynxModule::lynxModuleClazz);
     }
-    if (LynxModule::bulkCachingModeClazz != nullptr)
+    if (LynxModule::BulkCachingMode::bulkCachingModeClazz != nullptr)
     {
-        SAFE_DELETE_GLOBAL(env, LynxModule::bulkCachingModeClazz);
+        SAFE_DELETE_GLOBAL(env, LynxModule::BulkCachingMode::bulkCachingModeClazz);
     }
-    if (IMU::imuClazz != nullptr) {
+    if (LynxModule::BulkCachingMode::AUTO != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, LynxModule::BulkCachingMode::AUTO);
+    }
+    if (LynxModule::BulkCachingMode::MANUAL != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, LynxModule::BulkCachingMode::MANUAL);
+    }
+    if (LynxModule::BulkCachingMode::OFF != nullptr)
+    {
+        SAFE_DELETE_GLOBAL(env, LynxModule::BulkCachingMode::OFF);
+    }
+    // ----------------
+    if (IMU::imuClazz != nullptr)
+    {
         SAFE_DELETE_GLOBAL(env, IMU::imuClazz);
     }
-    if (Parameters::IMU::revHubOrientationOnRobotClazz != nullptr) {
+    if (Parameters::IMU::revHubOrientationOnRobotClazz != nullptr)
+    {
         SAFE_DELETE_GLOBAL(env, Parameters::IMU::revHubOrientationOnRobotClazz);
     }
-    if (Parameters::IMU::parametersClazz != nullptr) {
+    if (Parameters::IMU::parametersClazz != nullptr)
+    {
         SAFE_DELETE_GLOBAL(env, Parameters::IMU::parametersClazz);
     }
-    if (Parameters::IMU::logoFacingDirectionClazz != nullptr) {
+    if (Parameters::IMU::logoFacingDirectionClazz != nullptr)
+    {
         SAFE_DELETE_GLOBAL(env, Parameters::IMU::logoFacingDirectionClazz);
     }
     if (Parameters::IMU::usbFacingDirectionClazz != nullptr)
     {
         SAFE_DELETE_GLOBAL(env, Parameters::IMU::usbFacingDirectionClazz);
     }
+    // ----------------
     if (Orientation::orientationClazz != nullptr)
     {
         SAFE_DELETE_GLOBAL(env, Orientation::orientationClazz);
     }
+    // ----------------
     if (YawPitchRollAngles::yawPitchRollAnglesClazz != nullptr)
     {
         SAFE_DELETE_GLOBAL(env, YawPitchRollAngles::yawPitchRollAnglesClazz);
@@ -162,4 +202,5 @@ void deleteSDK(JNIEnv* env)
     {
         SAFE_DELETE_GLOBAL(env, AngleUnit::RADIANS);
     }
+    // -----------------
 }

@@ -38,14 +38,12 @@ void DcMotorEx::setPower(double desiredMotorPower)
     }
 }
 
-void DcMotorEx::setDirection(const DcMotorEx::Direction &direction) const
+void DcMotorEx::setDirection(jobject* direction) const
 {
     JNIEnv* env = getEnv();
-    const char* directionc_str = (direction == Direction::FORWARD) ? "FORWARD" : "REVERSE";
-    jobject jdirection = env->GetStaticObjectField(directionClazz, env->GetStaticFieldID(directionClazz,directionc_str ,"Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;"));
+    env->CallVoidMethod(dcMotorEx, setDirectionID, *direction);
 
-    env->CallVoidMethod(dcMotorEx, setDirectionID, jdirection);
-    SAFE_DELETE_LOCAL(env, jdirection);
+    const char* directionc_str = (*direction == Direction::FORWARD) ? "FORWARD" : "REVERSE";
     LOG_INFO("-------- Setting Motor Direction of '%s' to %s ---------", dcMotorName, directionc_str);
 }
 

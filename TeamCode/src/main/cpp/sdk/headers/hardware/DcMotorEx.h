@@ -2,6 +2,7 @@
 
 #include "sdk/util/Util.h"
 
+
 class DcMotorEx
 {
 private:
@@ -16,14 +17,15 @@ private:
     double currentMotorPower = 0;
 
 public:
-    enum class Direction
+
+    struct Direction
     {
-        FORWARD,
-        REVERSE
+        inline static jclass directionClazz = nullptr;
+        inline static jobject FORWARD = nullptr;
+        inline static jobject REVERSE = nullptr;
     };
 
     inline static jclass dcMotorExClazz = nullptr;
-    inline static jclass directionClazz = nullptr;
 
 
     explicit DcMotorEx(const char* dcMotorName, double powerTolerance);
@@ -32,10 +34,11 @@ public:
 
     void setPower(double desiredMotorPower);
 
-    void setDirection(const Direction& direction) const;
+    void setDirection(jobject* direction) const;
 
     double getVelocity();
 
     double getCurrentPosition();
 
 };
+

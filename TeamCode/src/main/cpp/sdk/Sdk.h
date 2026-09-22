@@ -20,10 +20,12 @@
 #include "sdk/headers/hardware/Servo.h"
 #include "sdk/headers/hardware/LynxModule.h"
 #include "sdk/headers/hardware/IMU.h"
+#include "sdk/headers/hardware/SparkFunOTOS.h"
 
 #include "sdk/headers/navigation/YawPitchRollAngles.h"
 #include "sdk/headers/navigation/Orientation.h"
 #include "sdk/headers/navigation/AngleUnit.h"
+#include "sdk/headers/navigation/Pose2D.h"
 
 
 

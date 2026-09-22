@@ -21,11 +21,8 @@ LynxModule::~LynxModule()
     }
 }
 
-void LynxModule::setBulkCachingMode(LynxModule::BulkCachingMode bulkCachingMode)
+void LynxModule::setBulkCachingMode(jobject* bulkCachingMode)
 {
     JNIEnv* env = getEnv();
-
-    jobject jbulkCachingMode = env->GetStaticObjectField(bulkCachingModeClazz, env->GetStaticFieldID(bulkCachingModeClazz,toString[bulkCachingMode],"Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;"));
-    env->CallVoidMethod(lynxModule, setBulkCachingModeID, jbulkCachingMode);
-    env->DeleteLocalRef(jbulkCachingMode);
+    env->CallVoidMethod(lynxModule, setBulkCachingModeID, *bulkCachingMode);
 }

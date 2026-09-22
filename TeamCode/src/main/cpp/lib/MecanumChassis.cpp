@@ -8,11 +8,6 @@ MecanumChassis::MecanumChassis(std::shared_ptr<DcMotorEx> frontLeft,std::shared_
     this->frontRight = std::move(frontRight);
     this->backLeft = std::move(backLeft);
     this->backRight = std::move(backRight);
-
-    this->frontLeft->setDirection(DcMotorEx::Direction::FORWARD);
-    this->frontRight->setDirection(DcMotorEx::Direction::FORWARD);
-    this->backLeft->setDirection(DcMotorEx::Direction::FORWARD);
-    this->backRight->setDirection(DcMotorEx::Direction::FORWARD);
 }
 
 void MecanumChassis::driveRobotCentric(double stickY, double stickX, double stickRotation)

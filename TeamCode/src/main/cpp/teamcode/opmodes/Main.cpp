@@ -12,8 +12,8 @@ extern "C" void Main (JNIEnv *env, jobject thiz)
     std::unique_ptr<DcMotorEx> left = std::make_unique<DcMotorEx>("left",motorPowerTolerance);
     std::unique_ptr<DcMotorEx> right = std::make_unique<DcMotorEx>("right",motorPowerTolerance);
     std::unique_ptr<DcMotorEx> lift = std::make_unique<DcMotorEx>("lift",motorPowerTolerance);
-    left->setDirection(DcMotorEx::Direction::FORWARD);
-    right->setDirection(DcMotorEx::Direction::REVERSE);
+    left->setDirection(&DcMotorEx::Direction::FORWARD);
+    right->setDirection(&DcMotorEx::Direction::REVERSE);
 
     double ledColor = 0.280;
     float rainbowDirection = 1.0f;
@@ -42,4 +42,4 @@ extern "C" void Main (JNIEnv *env, jobject thiz)
     deleteSDK(env);
 }
 
-TeleOp(Main, dummy);
+//TeleeOp(Main, dummy);

@@ -13,15 +13,16 @@ private:
 
 
 public:
-    enum BulkCachingMode
+    struct BulkCachingMode
     {
-        AUTO,
-        MANUAL,
-        OFF
+        inline static jclass bulkCachingModeClazz = nullptr;
+
+        inline static jobject AUTO = nullptr;
+        inline static jobject MANUAL = nullptr;
+        inline static jobject OFF = nullptr;
     };
 
     inline static jclass lynxModuleClazz = nullptr;
-    inline static jclass bulkCachingModeClazz = nullptr;
 
 
 
@@ -29,6 +30,6 @@ public:
 
     ~LynxModule();
 
-    void setBulkCachingMode(BulkCachingMode bulkCachingMode);
+    void setBulkCachingMode(jobject* bulkCachingMode);
 
 };
