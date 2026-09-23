@@ -25,7 +25,7 @@ IMU::~IMU()
     JNIEnv *env = getEnv();
     if (globalYawPitchRollAngles != nullptr)
     {
-        SAFE_DELETE_GLOBAL(env, globalYawPitchRollAngles);
+        SAFE_DELETE_GLOBAL(env, globalYawPitchRollAngles,__LINE__,__FILE_NAME__);
     }
     if (imu != nullptr)
     {

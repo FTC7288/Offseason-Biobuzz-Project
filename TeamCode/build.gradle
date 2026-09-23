@@ -17,6 +17,8 @@ apply from: '../build.common.gradle'
 apply from: '../build.dependencies.gradle'
 
 
+// TODO: Get the python script to work on every build instead of having to run the command manually
+
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
 

@@ -39,7 +39,7 @@ extern "C" void Main (JNIEnv *env, jobject thiz)
         led->setPosition(ledColor);
     }
 
-    deleteSDK(env);
+    clearSDK(env);
 }
 
-//TeleeOp(Main, dummy);
+TeleOp(Main, dummy);

@@ -46,7 +46,7 @@ Gamepad::~Gamepad()
 
     if (gamepad)
     {
-        SAFE_DELETE_GLOBAL(env, gamepad);
+        SAFE_DELETE_GLOBAL(env, gamepad,__LINE__,__FILE__);
     }
 }
 

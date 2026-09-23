@@ -4,4 +4,4 @@
 
 void initSDK(JNIEnv* env, jobject thiz);
 
-void deleteSDK(JNIEnv* env);
+void clearSDK(JNIEnv* env);

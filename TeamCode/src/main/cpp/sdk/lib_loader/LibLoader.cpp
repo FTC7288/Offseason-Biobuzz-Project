@@ -20,15 +20,15 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
 
     int registrySize = 0;
 
-    for (auto registry : OpmodeRegistry::getOpModes())
+    for (auto registry : Registry::getOpModes())
     {
         ++registrySize;
     }
     LOG_INFO("__________________________ SIZE OF REGISTRY: \"%d\" ________________________________", registrySize);
 
-    if (!OpmodeRegistry::getOpModes().empty())
+    if (!Registry::getOpModes().empty())
     {
-        for (auto opmodeFunc: OpmodeRegistry::getOpModes()) {
+        for (auto opmodeFunc: Registry::getOpModes()) {
             LOG_INFO("__________________________ OpMode Name: \"%s\" ____________________", opmodeFunc.name);
 
 

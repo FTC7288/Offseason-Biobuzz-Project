@@ -27,7 +27,7 @@ extern "C" void MainExperiment(JNIEnv* env, jobject thiz)
         telemetry::addData("First Angle", std::to_string(imu->getRobotOrientation()->firstAngle).c_str());
     }
 
-    deleteSDK(env);
+    clearSDK(env);
 }
 
 TeleOp(MainExperiment, dummy)

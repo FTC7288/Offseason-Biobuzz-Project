@@ -11,7 +11,7 @@ struct RegisteredOpMode
 };
 
 
-class OpmodeRegistry
+class Registry
 {
 public:
     static std::vector<RegisteredOpMode>& getOpModes()
@@ -26,17 +26,16 @@ public:
     }
 };
 
-
 #define TeleOp(name, group)                                                                    \
     static void __attribute__((constructor)) _register_##name()                         \
     {                                                                                   \
         __android_log_print(ANDROID_LOG_INFO, "sdk_loader", "Registering: %s", #name);  \
-        OpmodeRegistry::registerOpMode(#name, name);                                    \
+        Registry::registerOpMode(#name, name);                                    \
     }
 
 #define Autonomous(name, group)                                                                \
     static void __attribute__((constructor)) _register_##name()                         \
     {                                                                                   \
         __android_log_print(ANDROID_LOG_INFO, "sdk_loader", "Registering: %s", #name);  \
-        OpmodeRegistry::registerOpMode(#name, name);                                    \
+        Registry::registerOpMode(#name, name);                                    \
     }

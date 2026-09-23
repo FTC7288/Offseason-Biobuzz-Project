@@ -9,7 +9,7 @@
 #include <chrono>
 
 #include "sdk/util/Util.h"
-#include "sdk/util/OpmodeRegistry.h"
+#include "sdk/util/Registry.h"
 #include "sdk/util/InitSDK.h"
 
 #include "sdk/headers/opmode/LinearOpMode.h"

@@ -3,7 +3,7 @@
 #include <jni.h>
 #include <android/log.h>
 #include <string>
-#include "sdk/util/OpmodeRegistry.h"
+#include "sdk/util/Registry.h"
 #include "sdk/util/Util.h"
 #include "sdk/util/InitSDK.h"
 

@@ -1,5 +1,7 @@
 #include "sdk/headers/navigation/DistanceUnit.h"
 
+// TODO: finish getting the class and enum types
+
 namespace DistanceUnit
 {
     jclass distanceUnitClazz = nullptr;

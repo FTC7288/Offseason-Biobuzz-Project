@@ -31,5 +31,5 @@ find_library(log-lib log)
 
 target_link_libraries(sdk_loader ${log-lib})
 
-target_link_options(sdk_loader PRIVATE -Wl,--undefined=_ZN13OpmodeRegistry10getOpModesEv)
+target_link_options(sdk_loader PRIVATE -Wl,--undefined=_ZN13Registry10getOpModesEv)
 

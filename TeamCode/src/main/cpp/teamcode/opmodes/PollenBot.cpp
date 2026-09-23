@@ -67,7 +67,7 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
         telemetry::addData("Shooter Power", std::to_string(shooterPower).c_str());
     }
 
-    deleteSDK(env);
+    clearSDK(env);
 }
 
 TeleOp(PollenBot, dummy)
