@@ -7,6 +7,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
+#include <unordered_map>
 
 #include "sdk/util/Util.h"
 #include "sdk/util/Registry.h"

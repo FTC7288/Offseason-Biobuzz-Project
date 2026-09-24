@@ -10,21 +10,21 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
 
     const double driveMotorPowerTolerance = 0.05;
 
-    std::shared_ptr<DcMotorEx> frontLeft = std::make_shared<DcMotorEx>("fl", driveMotorPowerTolerance);
-    std::shared_ptr<DcMotorEx> frontRight = std::make_shared<DcMotorEx>("fr", driveMotorPowerTolerance);
-    std::shared_ptr<DcMotorEx> backLeft = std::make_shared<DcMotorEx>("bl",driveMotorPowerTolerance);
-    std::shared_ptr<DcMotorEx> backRight = std::make_shared<DcMotorEx>("br", driveMotorPowerTolerance);
+    DcMotorEx frontLeft {"fl" , driveMotorPowerTolerance};
+    DcMotorEx frontRight {"fr" , driveMotorPowerTolerance};
+    DcMotorEx backLeft {"bl" , driveMotorPowerTolerance};
+    DcMotorEx backRight {"br" , driveMotorPowerTolerance};
 
-    frontLeft->setDirection(&DcMotorEx::Direction::FORWARD);
-    frontRight->setDirection(&DcMotorEx::Direction::FORWARD);
-    backLeft->setDirection(&DcMotorEx::Direction::FORWARD);
-    backRight->setDirection(&DcMotorEx::Direction::FORWARD);
+    frontLeft.setDirection(&DcMotorEx::Direction::FORWARD);
+    frontRight.setDirection(&DcMotorEx::Direction::FORWARD);
+    backLeft.setDirection(&DcMotorEx::Direction::FORWARD);
+    backRight.setDirection(&DcMotorEx::Direction::FORWARD);
 
     MecanumChassis robotChassis = MecanumChassis(
-            frontLeft,
-            frontRight,
-            backLeft,
-            backRight
+            &frontLeft,
+            &frontRight,
+            &backLeft,
+            &backRight
             );
 
     double shooterPower = 0;

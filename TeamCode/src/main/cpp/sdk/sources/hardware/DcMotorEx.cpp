@@ -38,7 +38,7 @@ void DcMotorEx::setPower(double desiredMotorPower)
     }
 }
 
-void DcMotorEx::setDirection(jobject* direction) const
+void DcMotorEx::setDirection(jobject* direction)
 {
     JNIEnv* env = getEnv();
     env->CallVoidMethod(dcMotorEx, setDirectionID, *direction);

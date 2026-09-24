@@ -2,13 +2,9 @@
 
 #include <utility>
 
-MecanumChassis::MecanumChassis(std::shared_ptr<DcMotorEx> frontLeft,std::shared_ptr<DcMotorEx> frontRight,std::shared_ptr<DcMotorEx> backLeft,std::shared_ptr<DcMotorEx> backRight)
-{
-    this->frontLeft = std::move(frontLeft);
-    this->frontRight = std::move(frontRight);
-    this->backLeft = std::move(backLeft);
-    this->backRight = std::move(backRight);
-}
+MecanumChassis::MecanumChassis(DcMotorEx* frontLeft, DcMotorEx* frontRight, DcMotorEx* backLeft, DcMotorEx* backRight)
+: frontLeft(frontLeft), frontRight(frontRight), backLeft(backLeft), backRight(backRight)
+{}
 
 void MecanumChassis::driveRobotCentric(double stickY, double stickX, double stickRotation)
 {

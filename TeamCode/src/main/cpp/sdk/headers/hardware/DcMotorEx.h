@@ -34,7 +34,7 @@ public:
 
     void setPower(double desiredMotorPower);
 
-    void setDirection(jobject* direction) const;
+    void setDirection(jobject* direction);
 
     double getVelocity();
 

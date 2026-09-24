@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sdk/util/Util.h"
+#include <any>
 
 namespace telemetry
 {
