@@ -28,7 +28,7 @@ void MecanumChassis::driveRobotCentric(double stickY, double stickX, double stic
     backRight->setPower(backRightPower);
 }
 
-void MecanumChassis::driveFieldCentric(double stickY, double stickX, double stickRotation,double botHeading)
+void MecanumChassis::driveFieldCentric(double stickY, double stickX, double stickRotation, double botHeading)
 {
     double theta = std::atan2(stickY,stickX);
     double r = std::hypot(stickX,stickY);

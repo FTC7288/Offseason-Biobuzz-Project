@@ -20,11 +20,12 @@ namespace telemetry
 
 
     // FIXME: Make sure to fix the issue of converting everything into a string so that data can be output properly
-    void addData(const char* caption, const std::any &data)
+    void addData(const char* caption, const char* data)
     {
         JNIEnv* env = getEnv();
         jstring jcaption = env->NewStringUTF(caption);
-        env->DeleteLocalRef(env->CallObjectMethod(telemetry, cachedMethodIDs::addDataID,jcaption,data));
+        jstring jdata = env->NewStringUTF(data);
+        env->DeleteLocalRef(env->CallObjectMethod(telemetry, cachedMethodIDs::addDataID,jcaption,jdata));
         env->DeleteLocalRef(jcaption);
         env->DeleteLocalRef(jdata);
     }

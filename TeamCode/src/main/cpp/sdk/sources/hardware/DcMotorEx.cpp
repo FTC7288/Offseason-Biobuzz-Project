@@ -10,8 +10,8 @@ DcMotorEx::DcMotorEx(const char *dcMotorName, double powerTolerance)
 
     setPowerID = env->GetMethodID(dcMotorExClazz, "setPower", "(D)V");
     setDirectionID = env->GetMethodID(dcMotorExClazz, "setDirection", "(Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;)V");
-    //getVelocityID = env->GetMethodID(dcMotorExClazz, "getVelocity", "()D");
-    //getCurrentPositionID = env->GetMethodID(dcMotorExClazz, "getCurrentPosition", "()D");
+    getVelocityID = env->GetMethodID(dcMotorExClazz, "getVelocity", "()D");
+    getCurrentPositionID = env->GetMethodID(dcMotorExClazz, "getCurrentPosition", "()D");
 
     motorPowerTolerance = powerTolerance;
 }
