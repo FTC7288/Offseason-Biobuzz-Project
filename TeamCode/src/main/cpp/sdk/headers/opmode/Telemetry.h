@@ -17,7 +17,8 @@ namespace telemetry
 
     bool update();
 
-    void addData(const char* caption, const char* data);
+    template <typename T>
+    void addData(const char* caption, const std::any &data);
 
     void addLine(const char* caption);
 }
