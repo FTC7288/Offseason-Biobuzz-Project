@@ -10,6 +10,8 @@ Servo::Servo(const char *servoName, double positionTolerance) {
 
     setPositionID = env->GetMethodID(servoClazz, "setPosition", "(D)V");
     servoPositionTolerance = positionTolerance;
+
+    LOG_INFO("----- Creating Servo object '%s' -----", servoName);
 }
 
 Servo::~Servo() {

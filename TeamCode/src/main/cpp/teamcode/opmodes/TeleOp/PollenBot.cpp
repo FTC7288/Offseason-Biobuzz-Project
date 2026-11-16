@@ -25,11 +25,12 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
             &frontRight,
             &backLeft,
             &backRight
-            );
+    );
 
-    double desiredVelocity = 0;
+    double desiredVelocity = 1180;
     double shooterVelocity = 0;
     double shooterPower = 0;
+    bool atSpeed = false;
     DcMotorEx shooter {"shooter", 0};
     shooter.setDirection(&DcMotorEx::Direction::REVERSE);
 
@@ -37,8 +38,8 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
     DcMotorEx intake {"intake", 0};
     shooter.setDirection(&DcMotorEx::Direction::REVERSE);
 
-    const double downPos = 0.35;
-    const double upPos = 0.8;
+    const double downPos = 0.4;
+    const double upPos = 0.75;
     Servo stop {"stop", 0};
 
 
@@ -47,8 +48,16 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
     LOG_INFO("---------- initialized IMU -------");
     imu->initialize(Parameters::IMU::FacingDirection::RIGHT, Parameters::IMU::FacingDirection::UP);
 
+    SparkFunOTOS otos {"otos"};
+    otos.setAngularUnit(&AngleUnit::DEGREES);
+    otos.setAngularScalar(1.0034);
+    otos.setLinearUnit(&DistanceUnit::CM);
+    otos.setLinearScalar(1);
+    otos.setPosition(new Pose2D(-9.651,0,180));
 
     waitForStart();
+
+    otos.begin();
 
     while (opModeIsActive())
     {
@@ -60,18 +69,24 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
             imu->resetYaw();
         }
 
+        telemetry::addData("Pose X", std::to_string(otos.getPosition()->x).c_str());
+        telemetry::addData("Pose Y", std::to_string(otos.getPosition()->y).c_str());
+        telemetry::addData("Heading", std::to_string(otos.getPosition()->h).c_str());
+
+
+
         double imuAngle = imu->getYawPitchRollAngles()->getYaw(AngleUnit::RADIANS);
         robotChassis.driveFieldCentric(gamepad1->left_stick_y, -gamepad1->left_stick_x, -gamepad1->right_stick_x,imuAngle);
-        telemetry::addData("IMU ANGLE", std::to_string(imuAngle).c_str());
+
 
 
         if (gamepad1->dpad_up)
         {
-            desiredVelocity += 10;
+            desiredVelocity += 5;
         }
         else if (gamepad1->dpad_down)
         {
-            desiredVelocity -= 10;
+            desiredVelocity -= 5;
         }
 
         shooterVelocity = shooter.getVelocity();
@@ -84,8 +99,11 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
         } else if (shooterVelocity > desiredVelocity + 10)
         {
             shooterPower = 0;
+        } else
+        {
+            atSpeed = true;
+            shooterPower = 0;
         }
-
 
         if (gamepad1->b)
         {
@@ -93,13 +111,14 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
         }
         else
         {
+            atSpeed = false;
             shooter.setPower(0);
         }
 
         telemetry::addData("Shooter Power", std::to_string(shooterPower).c_str());
 
 
-        if (gamepad1->rightTriggerDown())
+        if (gamepad1->rightTriggerDown() || atSpeed)
         {
             intakePower = -1;
         }
@@ -113,7 +132,7 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
         }
         intake.setPower(intakePower);
 
-        if (gamepad1->left_bumper)
+        if (atSpeed)
         {
             stop.setPosition(downPos);
         }

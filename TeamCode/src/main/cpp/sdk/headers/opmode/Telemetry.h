@@ -17,6 +17,7 @@ namespace telemetry
 
     bool update();
 
+
     void addData(const char* caption, const char* data);
 
     void addLine(const char* caption);

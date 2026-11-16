@@ -11,9 +11,12 @@ DcMotorEx::DcMotorEx(const char *dcMotorName, double powerTolerance)
     setPowerID = env->GetMethodID(dcMotorExClazz, "setPower", "(D)V");
     setDirectionID = env->GetMethodID(dcMotorExClazz, "setDirection", "(Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;)V");
     getVelocityID = env->GetMethodID(dcMotorExClazz, "getVelocity", "()D");
-    getCurrentPositionID = env->GetMethodID(dcMotorExClazz, "getCurrentPosition", "()D");
+    setZeroPowerModeID = env->GetMethodID(dcMotorExClazz, "setZeroPowerBehavior", "(Lcom/qualcomm/robotcore/hardware/DcMotor$ZeroPowerBehavior;)V");
+    //getCurrentPositionID = env->GetMethodID(dcMotorExClazz, "getCurrentPosition", "()D");
 
     motorPowerTolerance = powerTolerance;
+
+    LOG_INFO("----- Creating DcMotorEx object '%s' -----", dcMotorName);
 }
 
 DcMotorEx::~DcMotorEx()
@@ -47,6 +50,14 @@ void DcMotorEx::setDirection(jobject* direction)
     LOG_INFO("-------- Setting Motor Direction of '%s' to %s ---------", dcMotorName, directionc_str);
 }
 
+void DcMotorEx::setZeroPowerMode(jobject *zeroPowerMode)
+{
+    JNIEnv* env = getEnv();
+    env->CallVoidMethod(dcMotorEx, setZeroPowerModeID, *zeroPowerMode);
+    const char* behavior_str = (*zeroPowerMode == ZeroPowerMode::BRAKE) ? "BRAKE" : "FLOAT";
+    LOG_INFO("-------- Setting Motor Zero Power Behavior of '%s' to %s ---------", dcMotorName, behavior_str);
+}
+
 double DcMotorEx::getVelocity()
 {
     JNIEnv* env = getEnv();
@@ -58,3 +69,4 @@ double DcMotorEx::getCurrentPosition()
     JNIEnv* env = getEnv();
     return env->CallDoubleMethod(dcMotorEx,getCurrentPositionID);
 }
+

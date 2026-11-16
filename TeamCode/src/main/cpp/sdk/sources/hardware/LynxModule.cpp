@@ -9,6 +9,8 @@ LynxModule::LynxModule(const char *lynxModlueName)
     env->DeleteLocalRef(jdcMotorName);
 
     setBulkCachingModeID = env->GetMethodID(lynxModuleClazz, "setBulkCachingMode", "(Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;)V");
+
+    LOG_INFO("----- Creating LynxModuleName object '%s' -----", lynxModlueName);
 }
 
 LynxModule::~LynxModule()

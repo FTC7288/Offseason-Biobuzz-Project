@@ -2,9 +2,32 @@
 
 #include <utility>
 
+Joystick::Joystick(double stickX, double stickY, double stickRotation)
+{
+    this->stickX = stickX;
+    this->stickY = stickY;
+    this->stickRotation = stickRotation;
+}
+
 MecanumChassis::MecanumChassis(DcMotorEx* frontLeft, DcMotorEx* frontRight, DcMotorEx* backLeft, DcMotorEx* backRight)
 : frontLeft(frontLeft), frontRight(frontRight), backLeft(backLeft), backRight(backRight)
 {}
+
+void MecanumChassis::toggleBrakeMode()
+{
+    frontLeft->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
+    frontRight->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
+    backLeft->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
+    backRight->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
+}
+
+void MecanumChassis::toggleFloatMode()
+{
+    frontLeft->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::FLOAT);
+    frontRight->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::FLOAT);
+    backLeft->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::FLOAT);
+    backRight->setZeroPowerMode(&DcMotorEx::ZeroPowerMode::FLOAT);
+}
 
 void MecanumChassis::driveRobotCentric(double stickY, double stickX, double stickRotation)
 {
@@ -40,5 +63,24 @@ void MecanumChassis::driveFieldCentric(double stickY, double stickX, double stic
 
     driveRobotCentric(stickY, stickX, stickRotation);
 }
+
+Joystick MecanumChassis::straightLineFollower(const Pose2D &startPose, const Pose2D &endPose)
+{
+    double theta = std::atan2(endPose.y - startPose.y, endPose.x - startPose.x);
+    double xOut = std::cos(theta);
+    double yOut = std::sin(theta);
+
+    return {-xOut,-yOut,0};
+}
+
+// TODO: Implement curved line follower
+Joystick MecanumChassis::curvedLineFollower(const Pose2D &startPose, const Pose2D &endPose)
+{
+
+    return {0,0,0};
+}
+
+
+
 
 

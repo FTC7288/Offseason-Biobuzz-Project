@@ -8,6 +8,6 @@ namespace DistanceUnit
 
     jobject MM = nullptr;
     jobject CM = nullptr;
-    jobject INCHES = nullptr;
-    jobject METERS = nullptr;
+    jobject INCH = nullptr;
+    jobject METER = nullptr;
 }

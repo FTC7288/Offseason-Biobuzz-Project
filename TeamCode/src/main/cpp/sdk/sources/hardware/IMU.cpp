@@ -18,6 +18,7 @@ IMU::IMU(const char *ImuName)
     orientation = *new Orientation();
     yawPitchRollAngles = *new YawPitchRollAngles();
 
+    LOG_INFO("----- Creating IMU object '%s' -----", ImuName);
 }
 
 IMU::~IMU()
@@ -33,7 +34,7 @@ IMU::~IMU()
     }
 }
 
-bool IMU::initialize(const Parameters::IMU::FacingDirection logoFacingDirection, const Parameters::IMU::FacingDirection usbFacingDirection)
+bool IMU::initialize(Parameters::IMU::FacingDirection logoFacingDirection, Parameters::IMU::FacingDirection usbFacingDirection)
 {
     JNIEnv* env = getEnv();
 

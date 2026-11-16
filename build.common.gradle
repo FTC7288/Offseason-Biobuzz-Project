@@ -80,6 +80,10 @@ android {
         //
         versionCode vCode
         versionName vName
+
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     // http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html
@@ -105,10 +109,16 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
     packagingOptions {
         pickFirst '**/*.so'
     }
-    ndkVersion '21.3.6528147'
+    ndkVersion '30.0.14904198'
 }
 
 repositories {

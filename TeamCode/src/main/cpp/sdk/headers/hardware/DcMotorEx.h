@@ -13,6 +13,7 @@ private:
     jmethodID setDirectionID = nullptr;
     jmethodID getVelocityID = nullptr;
     jmethodID getCurrentPositionID = nullptr;
+    jmethodID setZeroPowerModeID = nullptr;
     double motorPowerTolerance = 0;
     double currentMotorPower = 0;
 
@@ -25,6 +26,13 @@ public:
         inline static jobject REVERSE = nullptr;
     };
 
+    struct ZeroPowerMode
+    {
+        inline static jclass zeroPowerModeClazz = nullptr;
+        inline static jobject BRAKE = nullptr;
+        inline static jobject FLOAT = nullptr;
+    };
+
     inline static jclass dcMotorExClazz = nullptr;
 
 
@@ -35,6 +43,8 @@ public:
     void setPower(double desiredMotorPower);
 
     void setDirection(jobject* direction);
+
+    void setZeroPowerMode(jobject* zeroPowerMode);
 
     double getVelocity();
 

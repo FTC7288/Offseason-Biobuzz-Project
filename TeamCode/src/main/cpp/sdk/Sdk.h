@@ -8,6 +8,8 @@
 #include <thread>
 #include <chrono>
 #include <unordered_map>
+#include <filesystem>
+#include <fstream>
 
 #include "sdk/util/Util.h"
 #include "sdk/util/Registry.h"

@@ -19,6 +19,9 @@ private:
     jmethodID setAngularScalarID = nullptr;
     jmethodID setLinearScalarID = nullptr;
 
+    Pose2D pose2D;
+    jobject globalPose2D = nullptr;
+
 public:
     inline static jclass sparksFunOtosClazz = nullptr;
 
@@ -32,7 +35,7 @@ public:
 
     void setPosition(Pose2D *pose);
 
-    Pose2D* getPosition();
+    const Pose2D* getPosition();
 
     void setAngularUnit(jobject *angleUnit);
 

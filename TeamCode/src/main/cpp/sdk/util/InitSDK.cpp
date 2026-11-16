@@ -59,6 +59,9 @@ void initSDK(JNIEnv* env, jobject thiz)
     DcMotorEx::Direction::directionClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotorSimple$Direction",__LINE__,__FILE__);
     DcMotorEx::Direction::FORWARD = findAndCreateGlobalEnumRef(env, &DcMotorEx::Direction::directionClazz, "FORWARD", "Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;", __LINE__,__FILE__);
     DcMotorEx::Direction::REVERSE = findAndCreateGlobalEnumRef(env, &DcMotorEx::Direction::directionClazz, "REVERSE", "Lcom/qualcomm/robotcore/hardware/DcMotorSimple$Direction;", __LINE__,__FILE__);
+    DcMotorEx::ZeroPowerMode::zeroPowerModeClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/DcMotor$ZeroPowerBehavior",__LINE__,__FILE__);
+    DcMotorEx::ZeroPowerMode::BRAKE = findAndCreateGlobalEnumRef(env, &DcMotorEx::ZeroPowerMode::zeroPowerModeClazz, "BRAKE", "Lcom/qualcomm/robotcore/hardware/DcMotor$ZeroPowerBehavior;", __LINE__,__FILE__);
+    DcMotorEx::ZeroPowerMode::FLOAT = findAndCreateGlobalEnumRef(env, &DcMotorEx::ZeroPowerMode::zeroPowerModeClazz, "FLOAT", "Lcom/qualcomm/robotcore/hardware/DcMotor$ZeroPowerBehavior;", __LINE__, __FILE__);
 
     Servo::servoClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/Servo",__LINE__,__FILE__);
 
@@ -67,7 +70,6 @@ void initSDK(JNIEnv* env, jobject thiz)
     LynxModule::BulkCachingMode::AUTO = findAndCreateGlobalEnumRef(env, &LynxModule::BulkCachingMode::bulkCachingModeClazz, "AUTO", "Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;", __LINE__, __FILE__);
     LynxModule::BulkCachingMode::MANUAL = findAndCreateGlobalEnumRef(env, &LynxModule::BulkCachingMode::bulkCachingModeClazz, "MANUAL", "Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;", __LINE__, __FILE__);
     LynxModule::BulkCachingMode::OFF = findAndCreateGlobalEnumRef(env, &LynxModule::BulkCachingMode::bulkCachingModeClazz, "OFF", "Lcom/qualcomm/hardware/lynx/LynxModule$BulkCachingMode;", __LINE__, __FILE__);
-
 
     IMU::imuClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU",__LINE__,__FILE__);
     Parameters::IMU::parametersClazz = findAndCreateGlobalRef(env, "com/qualcomm/robotcore/hardware/IMU$Parameters",__LINE__,__FILE__);
@@ -81,7 +83,16 @@ void initSDK(JNIEnv* env, jobject thiz)
     AngleUnit::DEGREES = findAndCreateGlobalEnumRef(env, &AngleUnit::angleUnitClazz, "DEGREES", "Lorg/firstinspires/ftc/robotcore/external/navigation/AngleUnit;", __LINE__, __FILE__);
     AngleUnit::RADIANS = findAndCreateGlobalEnumRef(env, &AngleUnit::angleUnitClazz, "RADIANS", "Lorg/firstinspires/ftc/robotcore/external/navigation/AngleUnit;", __LINE__, __FILE__);
 
+    DistanceUnit::distanceUnitClazz = findAndCreateGlobalRef(env, "org/firstinspires/ftc/robotcore/external/navigation/DistanceUnit", __LINE__, __FILE__);
+    DistanceUnit::MM = findAndCreateGlobalEnumRef(env, &DistanceUnit::distanceUnitClazz, "MM", "Lorg/firstinspires/ftc/robotcore/external/navigation/DistanceUnit;", __LINE__, __FILE__);
+    DistanceUnit::CM = findAndCreateGlobalEnumRef(env, &DistanceUnit::distanceUnitClazz, "CM", "Lorg/firstinspires/ftc/robotcore/external/navigation/DistanceUnit;", __LINE__, __FILE__);
+    DistanceUnit::INCH = findAndCreateGlobalEnumRef(env, &DistanceUnit::distanceUnitClazz, "INCH", "Lorg/firstinspires/ftc/robotcore/external/navigation/DistanceUnit;", __LINE__, __FILE__);
+    DistanceUnit::METER = findAndCreateGlobalEnumRef(env, &DistanceUnit::distanceUnitClazz, "METER", "Lorg/firstinspires/ftc/robotcore/external/navigation/DistanceUnit;", __LINE__, __FILE__);
+
+    SparkFunOTOS::sparksFunOtosClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/sparkfun/SparkFunOTOS",__LINE__,__FILE__);
+    Pose2D::pose2DClazz = findAndCreateGlobalRef(env, "com/qualcomm/hardware/sparkfun/SparkFunOTOS$Pose2D",__LINE__,__FILE__);
 }
+
 
 void clearSDK(JNIEnv* env)
 {

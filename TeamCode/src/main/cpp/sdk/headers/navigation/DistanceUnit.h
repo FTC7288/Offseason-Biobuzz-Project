@@ -8,6 +8,6 @@ namespace DistanceUnit
 
     extern jobject MM;
     extern jobject CM;
-    extern jobject INCHES;
-    extern jobject METERS;
+    extern jobject INCH;
+    extern jobject METER;
 }
