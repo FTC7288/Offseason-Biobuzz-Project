@@ -1,5 +1,6 @@
 #include "sdk/Sdk.h"
 #include "lib/CustomLib.h"
+#include "teamcode/global/Robot.hpp"
 
 using namespace linearOpMode;
 using namespace gamepads;
@@ -19,6 +20,11 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
     frontRight.setDirection(&DcMotorEx::Direction::REVERSE);
     backLeft.setDirection(&DcMotorEx::Direction::FORWARD);
     backRight.setDirection(&DcMotorEx::Direction::REVERSE);
+
+    frontLeft.setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
+    frontRight.setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
+    backLeft.setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
+    backRight.setZeroPowerMode(&DcMotorEx::ZeroPowerMode::BRAKE);
 
     MecanumChassis robotChassis = MecanumChassis(
             &frontLeft,
@@ -40,7 +46,13 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
 
     const double downPos = 0.4;
     const double upPos = 0.75;
+
     Servo stop {"stop", 0};
+
+    bool pos = true;
+    Servo flowerLeft {"flowerLeft", 0};
+    Servo flowerRight {"flowerRight", 0};
+
 
 
     std::unique_ptr<IMU> imu = std::make_unique<IMU>("imu");
@@ -79,16 +91,6 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
         robotChassis.driveFieldCentric(gamepad1->left_stick_y, -gamepad1->left_stick_x, -gamepad1->right_stick_x,imuAngle);
 
 
-
-        if (gamepad1->dpad_up)
-        {
-            desiredVelocity += 5;
-        }
-        else if (gamepad1->dpad_down)
-        {
-            desiredVelocity -= 5;
-        }
-
         shooterVelocity = shooter.getVelocity();
         telemetry::addData("Shooter Velocity", std::to_string(shooterVelocity).c_str());
         telemetry::addData("Desired Velocity", std::to_string(desiredVelocity).c_str());
@@ -116,6 +118,19 @@ extern "C" void PollenBot(JNIEnv* env, jobject thiz)
         }
 
         telemetry::addData("Shooter Power", std::to_string(shooterPower).c_str());
+
+        if (gamepad1->right_bumper && pos)
+        {
+            flowerLeft.setPosition(Robot::Constants::FLOWER_SERVO_LEFT_DOWN_POS);
+            flowerRight.setPosition(Robot::Constants::FLOWER_SERVO_RIGHT_DOWN_POS);
+            pos = false;
+        }
+        else if (gamepad1->right_bumper && !pos)
+        {
+            flowerLeft.setPosition(Robot::Constants::FLOWER_SERVO_LEFT_UP_POS);
+            flowerRight.setPosition(Robot::Constants::FLOWER_SERVO_RIGHT_UP_POS);
+            pos = true;
+        }
 
 
         if (gamepad1->rightTriggerDown() || atSpeed)

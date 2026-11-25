@@ -6,7 +6,7 @@ using namespace linearOpMode;
 using namespace gamepads;
 using namespace std::chrono;
 
-extern "C" void Close(JNIEnv* env, jobject thiz)
+extern "C" void Up(JNIEnv* env, jobject thiz)
 {
     initSDK(env, thiz);
     Robot::init();
@@ -21,9 +21,9 @@ extern "C" void Close(JNIEnv* env, jobject thiz)
     Joystick joystickOutput {0,0,0};
 
     constexpr double CM = 2.54;
-    Pose2D startPose = Pose2D(87.2 * CM, 133.3 * CM,0);
-    Pose2D intermPose = Pose2D(86.96 * CM,117.81 * CM,0);
-    Pose2D goalPose = Pose2D(44.33 * CM,141.98 * CM,0);
+    Pose2D startPose = Pose2D(88.3 * CM, 131.7 * CM,0);
+    Pose2D intermPose = Pose2D(114.86 * CM,110.05 * CM,0);
+    Pose2D goalPose = Pose2D(151.82 * CM,42.65 * CM,0);
     Pose2D otosEndPose {0, 0, 0};
 
     waitForStart();
@@ -70,13 +70,6 @@ extern "C" void Close(JNIEnv* env, jobject thiz)
                 state++;
                 break;
             case 1:
-                if (curTimeStep - prevTimeStep > 10000)
-                {
-                    prevTimeStep = curTimeStep;
-                    state++;
-                }
-                break;
-            case 2:
                 Robot::shooter->setPower(shooterPower);
                 if (atSpeed)
                 {
@@ -90,15 +83,15 @@ extern "C" void Close(JNIEnv* env, jobject thiz)
                     state++;
                 }
                 break;
-            case 3:
+            case 2:
                 Robot::shooter->setPower(0);
                 Robot::stop->setPosition(Robot::Constants::STOP_UP_POS);
                 Robot::intake->setPower(Robot::Constants::INTAKE_OFF_POWER);
 
                 joystickOutput = Robot::robotChassis->straightLineFollower(startPose, intermPose);
-                Robot::robotChassis->driveRobotCentric(joystickOutput.stickY /1.75, joystickOutput.stickX/1.75, joystickOutput.stickRotation);
+                Robot::robotChassis->driveRobotCentric(joystickOutput.stickY, joystickOutput.stickX, joystickOutput.stickRotation);
 
-                if (curTimeStep - prevTimeStep > 275)
+                if (curTimeStep - prevTimeStep > 500)
                 {
                     otosEndPose = {Robot::otos->getPosition()->x, Robot::otos->getPosition()->y, 0};
                     atSpeed = false;
@@ -106,23 +99,17 @@ extern "C" void Close(JNIEnv* env, jobject thiz)
                     state++;
                 }
                 break;
-            case 4:
-                if (curTimeStep - prevTimeStep > 200)
-                {
-                    prevTimeStep = curTimeStep;
-                    state++;
-                }
-                break;
-            case 5:
+            case 3:
                 joystickOutput = Robot::robotChassis->straightLineFollower(otosEndPose, goalPose);
                 Robot::robotChassis->driveRobotCentric(joystickOutput.stickY, joystickOutput.stickX, joystickOutput.stickRotation);
-                if (curTimeStep - prevTimeStep > 1100)
+                if (curTimeStep - prevTimeStep > 1300)
                 {
+                    atSpeed = false;
                     prevTimeStep = curTimeStep;
                     state++;
                 }
                 break;
-            case 6:
+            case 4:
                 Robot::robotChassis->driveRobotCentric(0,0,0);
                 break;
         }
@@ -132,4 +119,4 @@ extern "C" void Close(JNIEnv* env, jobject thiz)
     clearSDK(env);
 }
 
-Autonomous(Close, dummy)
+Autonomous(Up, dummy)
